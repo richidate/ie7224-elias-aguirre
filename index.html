@@ -154,5 +154,109 @@ logoutButton.addEventListener('click', async () => {
   <h3>Materiales publicados</h3>
   <ul id="lista-materiales"></ul>
 </section>
+  <script>
+(async () => {
+  const sb = window.supabaseClient;
+  const panel = document.getElementById('panel-materiales');
+  const archivo = document.getElementById('archivo-material');
+  const boton = document.getElementById('subir-material');
+  const estado = document.getElementById('estado-material');
+  const lista = document.getElementById('lista-materiales');
+
+  if (!sb || !panel || !archivo || !boton || !estado || !lista) return;
+
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) return;
+
+  const { data: perfil } = await sb
+    .from('perfiles')
+    .select('tipo_usuario')
+    .eq('id', session.user.id)
+    .single();
+
+  if (!perfil || !['administrador', 'docente'].includes(perfil.tipo_usuario)) return;
+
+  panel.hidden = false;
+
+  async function cargar() {
+    lista.replaceChildren();
+
+    const { data, error } = await sb.storage
+      .from('materiales-ie7224')
+      .list('', { limit: 100 });
+
+    if (error) {
+      estado.textContent = 'Error al cargar materiales.';
+      return;
+    }
+
+    for (const item of data || []) {
+      if (!item.name) continue;
+
+      const li = document.createElement('li');
+      li.append(document.createTextNode(item.name + ' '));
+
+      const ver = document.createElement('button');
+      ver.textContent = 'Abrir';
+      ver.onclick = async () => {
+        const { data, error } = await sb.storage
+          .from('materiales-ie7224')
+          .createSignedUrl(item.name, 60);
+
+        if (error) {
+          estado.textContent = 'No se pudo abrir el archivo.';
+          return;
+        }
+
+        window.open(data.signedUrl, '_blank', 'noopener');
+      };
+      li.append(ver);
+
+      if (perfil.tipo_usuario === 'administrador') {
+        const borrar = document.createElement('button');
+        borrar.textContent = 'Eliminar';
+        borrar.onclick = async () => {
+          if (!confirm('¿Eliminar este archivo?')) return;
+
+          const { error } = await sb.storage
+            .from('materiales-ie7224')
+            .remove([item.name]);
+
+          estado.textContent = error ? 'Error al eliminar.' : 'Archivo eliminado.';
+          await cargar();
+        };
+        li.append(borrar);
+      }
+
+      lista.append(li);
+    }
+  }
+
+  boton.onclick = async () => {
+    const file = archivo.files[0];
+    if (!file) {
+      estado.textContent = 'Selecciona un archivo primero.';
+      return;
+    }
+
+    const nombre = Date.now() + '-' +
+      file.name.replace(/[^a-zA-Z0-9.-]/g, '');
+
+    estado.textContent = 'Subiendo archivo...';
+
+    const { error } = await sb.storage
+      .from('materiales-ie7224')
+      .upload(nombre, file);
+
+    estado.textContent = error ? 'Error: ' + error.message : '¡Archivo subido!';
+    if (!error) {
+      archivo.value = '';
+      await cargar();
+    }
+  };
+
+  await cargar();
+})();
+</script>
 </body>
 </html>
