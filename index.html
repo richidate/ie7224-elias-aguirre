@@ -49,6 +49,7 @@ const loginButton = form.querySelector('[type="submit"]');
 const logoutButton = document.getElementById('logout');
 
 const supabaseClient = window.supabase.createClient(
+  window.supabaseClient = supabaseClient;
   SUPABASE_URL,
   SUPABASE_PUBLIC_KEY
 );
