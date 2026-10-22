@@ -115,20 +115,26 @@ logoutButton.addEventListener('click', async () => {
   logoutButton.hidden = true;
   message.textContent = 'Sesión cerrada.';
 });
-  supabaseClient.auth.onAuthStateChange((event, session) => {
-  if (event === 'PASSWORD_RECOVERY') {
-    const nueva = prompt('Escribe tu nueva contraseña:');
-    if (nueva && nueva.length >= 8) {
-      supabaseClient.auth.updateUser({ password: nueva })
-        .then(({ error }) => {
-          if (error) {
-            alert('No se pudo cambiar la contraseña: ' + error.message);
-          } else {
-            alert('¡Contraseña actualizada correctamente!');
-          }
-        });
-    } else if (nueva !== null) {
+ supabaseClient.auth.onAuthStateChange(async (event, session) => {
+  if (event === 'PASSWORD_RECOVERY' && session) {
+    const nueva = prompt('Escribe tu nueva contraseña (mínimo 8 caracteres):');
+
+    if (nueva === null) return;
+
+    if (nueva.length < 8) {
       alert('La contraseña debe tener al menos 8 caracteres.');
+      return;
+    }
+
+    const { error } = await supabaseClient.auth.updateUser({
+      password: nueva
+    });
+
+    if (error) {
+      alert('No se pudo cambiar la contraseña: ' + error.message);
+    } else {
+      alert('¡Contraseña actualizada correctamente!');
+      await supabaseClient.auth.signOut();
     }
   }
 });
