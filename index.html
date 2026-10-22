@@ -115,6 +115,23 @@ logoutButton.addEventListener('click', async () => {
   logoutButton.hidden = true;
   message.textContent = 'Sesión cerrada.';
 });
+  supabaseClient.auth.onAuthStateChange((event, session) => {
+  if (event === 'PASSWORD_RECOVERY') {
+    const nueva = prompt('Escribe tu nueva contraseña:');
+    if (nueva && nueva.length >= 8) {
+      supabaseClient.auth.updateUser({ password: nueva })
+        .then(({ error }) => {
+          if (error) {
+            alert('No se pudo cambiar la contraseña: ' + error.message);
+          } else {
+            alert('¡Contraseña actualizada correctamente!');
+          }
+        });
+    } else if (nueva !== null) {
+      alert('La contraseña debe tener al menos 8 caracteres.');
+    }
+  }
+});
 </script>
 </body>
 </html>
