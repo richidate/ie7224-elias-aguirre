@@ -98,9 +98,11 @@ form.addEventListener('submit', async event => {
     }
 
     message.textContent = 'Acceso autorizado. ¡Bienvenido!';
-    loginButton.hidden = true;
-    logoutButton.hidden = false;
-    document.getElementById('password').value = '';
+   loginButton.hidden = true;
+logoutButton.hidden = false;
+document.getElementById('email').disabled = true;
+document.getElementById('password').disabled = true;
+document.getElementById('password').value = '';
 
   } catch (error) {
     message.textContent = error.message || 'No se pudo iniciar sesión.';
