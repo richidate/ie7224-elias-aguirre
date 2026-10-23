@@ -973,6 +973,38 @@ footer small {
       });
 
       li.appendChild(botonVer);
+      // Descargar un archivo privado mediante un enlace temporal.
+const botonDescargar = document.createElement('button');
+botonDescargar.type = 'button';
+botonDescargar.textContent = 'Descargar';
+
+  botonDescargar.addEventListener('click', async () => {
+    estado.textContent = 'Preparando descarga...';
+
+    const { data: enlace, error: errorEnlace } =
+      await supabaseClient.storage
+        .from('materiales-ie7224')
+        .createSignedUrl(item.name, 60, {
+          download: true
+        });
+
+    if (errorEnlace) {
+      estado.textContent =
+        'No se pudo descargar el archivo: ' + errorEnlace.message;
+      return;
+    }
+
+    const enlaceDescarga = document.createElement('a');
+    enlaceDescarga.href = enlace.signedUrl;
+    enlaceDescarga.download = item.name;
+    document.body.appendChild(enlaceDescarga);
+    enlaceDescarga.click();
+    enlaceDescarga.remove();
+
+    estado.textContent = 'Se solicitó la descarga de: ' + item.name;
+  });
+
+  li.appendChild(botonDescargar);
 
       // Solo el administrador verá el botón para eliminar.
       if (perfilActual === 'administrador') {
