@@ -168,15 +168,29 @@ logoutButton.addEventListener('click', async () => {
   const { data: { session } } = await sb.auth.getSession();
   if (!session) return;
 
-  const { data: perfil } = await sb
-    .from('perfiles')
-    .select('tipo_usuario')
-    .eq('id', session.user.id)
-    .single();
+ const { data: perfil, error: perfilError } = await sb
+  .from('perfiles')
+  .select('tipo_usuario')
+  .eq('id', session.user.id)
+  .maybeSingle();
 
-  if (!perfil || !['administrador', 'docente'].includes(perfil.tipo_usuario)) return;
+if (perfilError) {
+  console.error('Error al consultar el perfil:', perfilError);
+  estado.textContent = 'Error al consultar tu perfil.';
+  return;
+}
 
-  panel.hidden = false;
+if (!perfil) {
+  estado.textContent = 'No se encontró tu perfil.';
+  return;
+}
+
+if (!['administrador', 'docente'].includes(perfil.tipo_usuario)) {
+  estado.textContent = 'Tu cuenta no tiene permisos para ver los materiales.';
+  return;
+}
+
+panel.hidden = false;
 
   async function cargar() {
     lista.replaceChildren();
