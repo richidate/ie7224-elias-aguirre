@@ -783,7 +783,50 @@ footer small {
       </button>
 
       <p id="login-message" role="status" aria-live="polite"></p>
+      
     </form>
+<div id="solicitud-acceso" style="margin-top:24px;padding:18px;border:1px solid #ddd;border-radius:12px">
+  <h3>Solicitar acceso a la plataforma</h3>
+  <p>Si eres docente o padre de familia, puedes solicitar una cuenta. El administrador revisará tu solicitud.</p>
+
+  <form id="solicitud-form">
+    <label for="solicitud-nombre">Nombre completo</label>
+    <input
+      id="solicitud-nombre"
+      type="text"
+      required
+      maxlength="150"
+      style="display:block;width:100%;padding:12px;margin:6px 0 14px;border:1px solid #ccc;border-radius:8px"
+    >
+
+    <label for="solicitud-correo">Correo electrónico</label>
+    <input
+      id="solicitud-correo"
+      type="email"
+      required
+      maxlength="254"
+      style="display:block;width:100%;padding:12px;margin:6px 0 14px;border:1px solid #ccc;border-radius:8px"
+    >
+
+    <label for="solicitud-tipo">¿Qué tipo de usuario eres?</label>
+    <select
+      id="solicitud-tipo"
+      required
+      style="display:block;width:100%;padding:12px;margin:6px 0 14px;border:1px solid #ccc;border-radius:8px"
+    >
+      <option value="">Selecciona una opción</option>
+      <option value="docente">Docente</option>
+      <option value="padre_familia">Padre de familia</option>
+    </select>
+
+    <button class="btn red" type="submit" id="solicitud-boton">
+      Enviar solicitud
+    </button>
+
+    <p id="solicitud-mensaje" role="status" aria-live="polite"></p>
+  </form>
+</div>
+    
   </div>
 </div>
 
