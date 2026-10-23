@@ -1198,41 +1198,48 @@ botonDescargar.textContent = 'Descargar';
     }
   });
 
-  // Recuperación de contraseña.
-  supabaseClient.auth.onAuthStateChange(async (event, session) => {
-    setTimeout(() => {
-      actualizarPanel(session);
-    }, 0);
+  // Recuperación de contraseña e invitaciones de nuevos usuarios.
+supabaseClient.auth.onAuthStateChange(async (event, session) => {
+setTimeout(() => {
+actualizarPanel(session);
+}, 0);
 
-    if (event === 'PASSWORD_RECOVERY' && session) {
-      const nueva = prompt(
-        'Escribe tu nueva contraseña (mínimo 8 caracteres):'
-      );
+if (
+  session &&
+  (event === 'PASSWORD_RECOVERY' || event === 'SIGNED_IN')
+) {
+  const url = new URL(window.location.href);
+  const tipo = url.searchParams.get('type');
+  const esInvitacion = tipo === 'invite';
 
-      if (nueva === null) {
-        return;
-      }
+  if (event === 'PASSWORD_RECOVERY' || esInvitacion) {
+    const nueva = prompt(
+      'Crea tu contraseña (mínimo 8 caracteres):'
+    );
 
-      if (nueva.length < 8) {
-        alert('La contraseña debe tener al menos 8 caracteres.');
-        return;
-      }
-
-      const { error } = await supabaseClient.auth.updateUser({
-        password: nueva
-      });
-
-      if (error) {
-        alert(
-          'No se pudo cambiar la contraseña: ' + error.message
-        );
-      } else {
-        alert('¡Contraseña actualizada correctamente!');
-        await supabaseClient.auth.signOut();
-      }
+    if (nueva === null) {
+      return;
     }
-  });
 
+    if (nueva.length < 8) {
+      alert('La contraseña debe tener al menos 8 caracteres.');
+      return;
+    }
+
+    const { error } = await supabaseClient.auth.updateUser({
+      password: nueva
+    });
+
+    if (error) {
+      alert('No se pudo establecer la contraseña: ' + error.message);
+    } else {
+      alert('¡Contraseña creada correctamente! Ya puedes ingresar.');
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }
+}
+
+});
   // Comprobar si ya existe una sesión activa al abrir la página.
   supabaseClient.auth.getSession().then(({ data, error }) => {
     if (error) {
