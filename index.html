@@ -1340,8 +1340,10 @@ botonDescargar.textContent = 'Descargar';
       } catch (error) {
         console.error('Error al enviar solicitud:', error);
 
-        solicitudMensaje.textContent =
-  'Error: ' + (error.message || error.code || 'Error desconocido');
+       solicitudMensaje.textContent =
+  'Error: ' + (error.message || 'Error desconocido') +
+  ' | Código: ' + (error.code || 'sin código') +
+  ' | Detalle: ' + (error.details || 'sin detalle');
       } finally {
         solicitudBoton.disabled = false;
       }
