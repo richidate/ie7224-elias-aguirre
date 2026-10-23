@@ -1291,6 +1291,96 @@ botonDescargar.textContent = 'Descargar';
     }
   });
 // Enviar solicitud de acceso para docentes y padres de familia.
+  // Gestionar solicitudes de acceso desde el panel de administración.
+const contenedorSolicitudes = document.getElementById('solicitudes-admin');
+const estadoSolicitudes = document.getElementById('estado-solicitudes');
+const botonActualizarSolicitudes = document.getElementById('actualizar-solicitudes');
+
+async function cargarSolicitudes() {
+if (perfilActual !== 'administrador') {
+return;
+}
+
+estadoSolicitudes.textContent = 'Cargando solicitudes...';
+
+const { data, error } = await supabaseClient
+.from('solicitudes_acceso')
+.select('id, nombre_completo, correo, tipo_solicitado, estado, creado_en')
+.eq('estado', 'pendiente')
+.order('creado_en', { ascending: true });
+
+if (error) {
+estadoSolicitudes.textContent =
+'No se pudieron cargar las solicitudes: ' + error.message;
+return;
+}
+
+contenedorSolicitudes.replaceChildren();
+
+if (!data || data.length === 0) {
+contenedorSolicitudes.textContent = 'No hay solicitudes pendientes.';
+estadoSolicitudes.textContent = '';
+return;
+}
+
+data.forEach(solicitud => {
+const tarjeta = document.createElement('div');
+tarjeta.style.cssText = 'border:1px solid #ccc;padding:12px;margin:10px 0;border-radius:8px';
+
+const informacion = document.createElement('p');
+informacion.textContent =
+  `${solicitud.nombre_completo} — ${solicitud.correo} — ${solicitud.tipo_solicitado}`;
+
+const botonAprobar = document.createElement('button');
+botonAprobar.type = 'button';
+botonAprobar.textContent = 'Aprobar y enviar invitación';
+botonAprobar.className = 'btn red';
+
+botonAprobar.addEventListener('click', async () => {
+  if (!confirm(`¿Aprobar la solicitud de ${solicitud.nombre_completo} y enviar una invitación a ${solicitud.correo}?`)) {
+    return;
+  }
+
+  botonAprobar.disabled = true;
+  estadoSolicitudes.textContent = 'Procesando solicitud...';
+
+  try {
+    const { data: resultado, error: errorFuncion } =
+      await supabaseClient.functions.invoke('gestionar-solicitudes', {
+        body: { solicitud_id: solicitud.id }
+      });
+
+    if (errorFuncion) {
+      throw errorFuncion;
+    }
+
+    if (resultado?.error) {
+      throw new Error(resultado.error);
+    }
+
+    estadoSolicitudes.textContent =
+      resultado?.mensaje || 'Solicitud gestionada correctamente.';
+
+    await cargarSolicitudes();
+
+  } catch (error) {
+    estadoSolicitudes.textContent =
+      'No se pudo completar la operación: ' + error.message;
+    botonAprobar.disabled = false;
+  }
+});
+
+tarjeta.append(informacion, botonAprobar);
+contenedorSolicitudes.appendChild(tarjeta);
+
+});
+
+estadoSolicitudes.textContent = '';
+}
+
+if (botonActualizarSolicitudes) {
+botonActualizarSolicitudes.addEventListener('click', cargarSolicitudes);
+}
   const solicitudForm = document.getElementById('solicitud-form');
   const solicitudMensaje = document.getElementById('solicitud-mensaje');
   const solicitudBoton = document.getElementById('solicitud-boton');
