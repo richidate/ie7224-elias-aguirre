@@ -1341,7 +1341,7 @@ botonDescargar.textContent = 'Descargar';
         console.error('Error al enviar solicitud:', error);
 
         solicitudMensaje.textContent =
-          'No se pudo enviar la solicitud. Inténtalo nuevamente más tarde.';
+  'Error: ' + (error.message || error.code || 'Error desconocido');
       } finally {
         solicitudBoton.disabled = false;
       }
