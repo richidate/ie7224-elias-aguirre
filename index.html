@@ -1285,7 +1285,68 @@ botonDescargar.textContent = 'Descargar';
       botonSubir.disabled = false;
     }
   });
+// Enviar solicitud de acceso para docentes y padres de familia.
+  const solicitudForm = document.getElementById('solicitud-form');
+  const solicitudMensaje = document.getElementById('solicitud-mensaje');
+  const solicitudBoton = document.getElementById('solicitud-boton');
 
+  if (solicitudForm) {
+    solicitudForm.addEventListener('submit', async event => {
+      event.preventDefault();
+
+      const nombre = document
+        .getElementById('solicitud-nombre')
+        .value.trim();
+
+      const correo = document
+        .getElementById('solicitud-correo')
+        .value.trim()
+        .toLowerCase();
+
+      const tipo = document
+        .getElementById('solicitud-tipo')
+        .value;
+
+      if (!nombre || !correo || !['docente', 'padre_familia'].includes(tipo)) {
+        solicitudMensaje.textContent =
+          'Completa los datos y selecciona un tipo de usuario válido.';
+        return;
+      }
+
+      solicitudBoton.disabled = true;
+      solicitudMensaje.textContent = 'Enviando solicitud...';
+
+      try {
+        const { error } = await supabaseClient
+          .from('solicitudes_acceso')
+          .insert([{
+            nombre_completo: nombre,
+            correo: correo,
+            tipo_solicitado: tipo
+          }]);
+
+        if (error) {
+          if (error.code === '23505') {
+            throw new Error('Ya existe una solicitud con esos datos.');
+          }
+          throw error;
+        }
+
+        solicitudMensaje.textContent =
+          '¡Solicitud enviada! Quedará pendiente de revisión por el administrador.';
+
+        solicitudForm.reset();
+
+      } catch (error) {
+        console.error('Error al enviar solicitud:', error);
+
+        solicitudMensaje.textContent =
+          'No se pudo enviar la solicitud. Inténtalo nuevamente más tarde.';
+      } finally {
+        solicitudBoton.disabled = false;
+      }
+    });
+  }
 })();
 </script>
 
