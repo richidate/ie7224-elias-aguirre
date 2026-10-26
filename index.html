@@ -353,6 +353,19 @@ section {
   margin: 12px 0;
 }
 
+#form-comunicado { display: grid; gap: 9px; margin: 16px 0 22px; }
+#form-comunicado input:not([type="checkbox"]),
+#form-comunicado select, #form-comunicado textarea {
+  width: 100%; max-width: 100%; padding: 11px; border: 1px solid #ccd2dd;
+  border-radius: 8px; font: inherit; box-sizing: border-box;
+}
+#form-comunicado label { font-weight: 600; }
+#form-comunicado .check-line { display: flex; align-items: center; gap: 9px; font-weight: normal; }
+.comunicado-admin { border: 1px solid #e4e7ed; border-radius: 12px; padding: 14px; margin: 10px 0; }
+.comunicado-admin p { white-space: pre-wrap; }
+.comunicado-admin button { margin: 4px 6px 0 0; }
+.estado-comunicado { color: var(--gris); font-size: 14px; }
+
 #lista-materiales button {
   margin: 4px;
   padding: 7px 12px;
@@ -613,24 +626,13 @@ footer small {
       <div class="eyebrow" style="color:#b62538">Información al día</div>
       <h2>Noticias y comunicados</h2>
       <p>
-        Espacio preparado para avisos oficiales. Los ejemplos deben reemplazarse
-        por comunicados confirmados por la institución.
+        Avisos, fechas e información oficial publicados por la institución.
       </p>
     </div>
 
     <div class="news">
-      <div>
-        <article class="notice">
-          <small>Comunicado institucional</small>
-          <h3>Próximos avisos</h3>
-          <p>Próximamente se publicarán fechas, indicaciones y anuncios confirmados por la dirección.</p>
-        </article>
-
-        <article class="notice">
-          <small>Actividades escolares</small>
-          <h3>Compartimos nuestra comunidad</h3>
-          <p>Información sobre actividades académicas, culturales, deportivas y de convivencia.</p>
-        </article>
+      <div id="lista-comunicados-publicos" aria-live="polite">
+        <article class="notice"><p>Cargando comunicados...</p></article>
       </div>
 
       <aside class="banner">
@@ -731,6 +733,34 @@ footer small {
     <div class="panel-box">
       <h2>Panel de administración — IE 7224</h2>
       <p>Gestión de materiales institucionales</p>
+
+      <div id="gestion-comunicados" hidden>
+        <hr>
+        <h3>Publicar y administrar comunicados</h3>
+        <p>Los comunicados publicados aparecerán automáticamente en la página principal.</p>
+        <form id="form-comunicado">
+          <input type="hidden" id="comunicado-id">
+          <label for="comunicado-titulo">Título</label>
+          <input id="comunicado-titulo" type="text" maxlength="180" required placeholder="Título del comunicado">
+          <label for="comunicado-categoria">Categoría</label>
+          <select id="comunicado-categoria" required>
+            <option>Comunicado institucional</option>
+            <option>Actividades escolares</option>
+            <option>Información académica</option>
+            <option>Convocatorias</option>
+            <option>Otros avisos</option>
+          </select>
+          <label for="comunicado-contenido">Contenido</label>
+          <textarea id="comunicado-contenido" rows="5" maxlength="10000" required placeholder="Escribe aquí la información que se publicará"></textarea>
+          <label class="check-line"><input id="comunicado-publicado" type="checkbox" checked> Publicar inmediatamente</label>
+          <button class="btn red" id="guardar-comunicado" type="submit">Publicar comunicado</button>
+          <button class="btn" id="cancelar-edicion-comunicado" type="button" hidden>Cancelar edición</button>
+        </form>
+        <p id="estado-comunicados" role="status" aria-live="polite"></p>
+        <h3>Comunicados registrados</h3>
+        <div id="lista-comunicados-admin"></div>
+      </div>
+
       <h3>Solicitudes de acceso pendientes</h3><div id="solicitudes-admin">
   <p>Las solicitudes aparecerán aquí cuando carguemos el panel.</p>
 </div><p id="estado-solicitudes" role="status" aria-live="polite"></p><button class="btn red" type="button" id="actualizar-solicitudes">
@@ -859,6 +889,13 @@ footer small {
   const botonSubir = document.getElementById('subir-material');
   const estado = document.getElementById('estado-material');
   const lista = document.getElementById('lista-materiales');
+  const gestionComunicados = document.getElementById('gestion-comunicados');
+  const listaComunicadosPublicos = document.getElementById('lista-comunicados-publicos');
+  const listaComunicadosAdmin = document.getElementById('lista-comunicados-admin');
+  const formComunicado = document.getElementById('form-comunicado');
+  const estadoComunicados = document.getElementById('estado-comunicados');
+  const botonGuardarComunicado = document.getElementById('guardar-comunicado');
+  const botonCancelarEdicionComunicado = document.getElementById('cancelar-edicion-comunicado');
 
   const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
@@ -871,6 +908,162 @@ footer small {
   let perfilActual = null;
   let cargandoPanel = false;
   let sesionPanelPendiente = false;
+
+  // Mostrar comunicados publicados en la página pública.
+  async function cargarComunicadosPublicos() {
+    if (!listaComunicadosPublicos) return;
+    const { data, error } = await supabaseClient
+      .from('comunicados')
+      .select('id, titulo, contenido, categoria, creado_en')
+      .eq('publicado', true)
+      .order('creado_en', { ascending: false });
+
+    listaComunicadosPublicos.replaceChildren();
+    if (error) {
+      const aviso = document.createElement('article');
+      aviso.className = 'notice';
+      aviso.textContent = 'No se pudieron cargar los comunicados en este momento.';
+      listaComunicadosPublicos.appendChild(aviso);
+      console.error('Error al cargar comunicados públicos:', error);
+      return;
+    }
+    if (!data || data.length === 0) {
+      const aviso = document.createElement('article');
+      aviso.className = 'notice';
+      const titulo = document.createElement('h3');
+      titulo.textContent = 'Próximamente';
+      const texto = document.createElement('p');
+      texto.textContent = 'Aquí se publicarán los comunicados oficiales de la institución.';
+      aviso.append(titulo, texto);
+      listaComunicadosPublicos.appendChild(aviso);
+      return;
+    }
+    data.forEach(item => {
+      const tarjeta = document.createElement('article');
+      tarjeta.className = 'notice';
+      const categoria = document.createElement('small');
+      categoria.textContent = item.categoria || 'Comunicado institucional';
+      const titulo = document.createElement('h3');
+      titulo.textContent = item.titulo;
+      const texto = document.createElement('p');
+      texto.style.whiteSpace = 'pre-wrap';
+      texto.textContent = item.contenido;
+      tarjeta.append(categoria, titulo, texto);
+      if (item.creado_en) {
+        const fecha = document.createElement('p');
+        fecha.className = 'estado-comunicado';
+        fecha.textContent = new Date(item.creado_en).toLocaleDateString('es-PE', { year: 'numeric', month: 'long', day: 'numeric' });
+        tarjeta.appendChild(fecha);
+      }
+      listaComunicadosPublicos.appendChild(tarjeta);
+    });
+  }
+
+  function limpiarFormularioComunicado() {
+    formComunicado.reset();
+    document.getElementById('comunicado-id').value = '';
+    document.getElementById('comunicado-publicado').checked = true;
+    botonGuardarComunicado.textContent = 'Publicar comunicado';
+    botonCancelarEdicionComunicado.hidden = true;
+  }
+
+  // Listado de gestión, visible únicamente para administradores.
+  async function cargarComunicadosAdmin() {
+    if (perfilActual !== 'administrador' || !listaComunicadosAdmin) return;
+    estadoComunicados.textContent = 'Cargando comunicados...';
+    const { data, error } = await supabaseClient
+      .from('comunicados')
+      .select('id, titulo, contenido, categoria, publicado, creado_en')
+      .order('creado_en', { ascending: false });
+    listaComunicadosAdmin.replaceChildren();
+    if (error) {
+      estadoComunicados.textContent = 'No se pudieron cargar: ' + error.message;
+      return;
+    }
+    if (!data || data.length === 0) {
+      listaComunicadosAdmin.textContent = 'Todavía no hay comunicados registrados.';
+      estadoComunicados.textContent = '';
+      return;
+    }
+    data.forEach(item => {
+      const tarjeta = document.createElement('article');
+      tarjeta.className = 'comunicado-admin';
+      const titulo = document.createElement('h4');
+      titulo.textContent = item.titulo;
+      const estadoItem = document.createElement('p');
+      estadoItem.textContent = (item.publicado ? 'Publicado' : 'Borrador') + ' · ' + (item.categoria || 'Comunicado institucional');
+      const resumen = document.createElement('p');
+      resumen.textContent = item.contenido;
+      const editar = document.createElement('button');
+      editar.type = 'button'; editar.className = 'btn'; editar.textContent = 'Editar';
+      editar.addEventListener('click', () => {
+        document.getElementById('comunicado-id').value = item.id;
+        document.getElementById('comunicado-titulo').value = item.titulo || '';
+        document.getElementById('comunicado-categoria').value = item.categoria || 'Comunicado institucional';
+        document.getElementById('comunicado-contenido').value = item.contenido || '';
+        document.getElementById('comunicado-publicado').checked = !!item.publicado;
+        botonGuardarComunicado.textContent = 'Guardar cambios';
+        botonCancelarEdicionComunicado.hidden = false;
+        formComunicado.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      const eliminar = document.createElement('button');
+      eliminar.type = 'button'; eliminar.className = 'btn red'; eliminar.textContent = 'Eliminar';
+      eliminar.addEventListener('click', async () => {
+        if (!confirm('¿Eliminar el comunicado «' + item.titulo + '»? Esta acción no se puede deshacer.')) return;
+        eliminar.disabled = true;
+        estadoComunicados.textContent = 'Eliminando comunicado...';
+        const { error: errorEliminar } = await supabaseClient.from('comunicados').delete().eq('id', item.id);
+        if (errorEliminar) {
+          estadoComunicados.textContent = 'No se pudo eliminar: ' + errorEliminar.message;
+          eliminar.disabled = false;
+          return;
+        }
+        estadoComunicados.textContent = 'Comunicado eliminado.';
+        await cargarComunicadosAdmin();
+        await cargarComunicadosPublicos();
+      });
+      tarjeta.append(titulo, estadoItem, resumen, editar, eliminar);
+      listaComunicadosAdmin.appendChild(tarjeta);
+    });
+    estadoComunicados.textContent = '';
+  }
+
+  formComunicado.addEventListener('submit', async event => {
+    event.preventDefault();
+    if (perfilActual !== 'administrador') {
+      estadoComunicados.textContent = 'Solo el administrador puede gestionar comunicados.';
+      return;
+    }
+    const id = document.getElementById('comunicado-id').value;
+    const datos = {
+      titulo: document.getElementById('comunicado-titulo').value.trim(),
+      categoria: document.getElementById('comunicado-categoria').value,
+      contenido: document.getElementById('comunicado-contenido').value.trim(),
+      publicado: document.getElementById('comunicado-publicado').checked
+    };
+    if (!datos.titulo || !datos.contenido) {
+      estadoComunicados.textContent = 'Completa el título y el contenido.';
+      return;
+    }
+    botonGuardarComunicado.disabled = true;
+    estadoComunicados.textContent = id ? 'Guardando cambios...' : 'Guardando comunicado...';
+    try {
+      const resultado = id
+        ? await supabaseClient.from('comunicados').update(datos).eq('id', id)
+        : await supabaseClient.from('comunicados').insert([datos]);
+      if (resultado.error) throw resultado.error;
+      estadoComunicados.textContent = datos.publicado ? 'Comunicado guardado y publicado.' : 'Borrador guardado; todavía no aparece en la página pública.';
+      limpiarFormularioComunicado();
+      await cargarComunicadosAdmin();
+      await cargarComunicadosPublicos();
+    } catch (error) {
+      estadoComunicados.textContent = 'No se pudo guardar: ' + (error.message || 'Error desconocido');
+    } finally {
+      botonGuardarComunicado.disabled = false;
+    }
+  });
+
+  botonCancelarEdicionComunicado.addEventListener('click', limpiarFormularioComunicado);
 
   // Abrir la ventana de acceso.
   document.querySelectorAll('[data-open]').forEach(button => {
@@ -913,6 +1106,7 @@ footer small {
         usuarioActual = null;
         perfilActual = null;
         panel.hidden = true;
+        gestionComunicados.hidden = true;
         lista.replaceChildren();
         estado.textContent = '';
         return;
@@ -960,8 +1154,13 @@ footer small {
 
       perfilActual = perfil.tipo_usuario;
       panel.hidden = false;
+      gestionComunicados.hidden = perfilActual !== 'administrador';
 
       await cargarMateriales();
+      if (perfilActual === 'administrador') {
+        await cargarComunicadosAdmin();
+        await cargarSolicitudes();
+      }
 
     } catch (error) {
       estado.textContent =
@@ -1243,6 +1442,9 @@ if (
 }
 
 });
+  // Cargar los comunicados públicos sin requerir inicio de sesión.
+  cargarComunicadosPublicos();
+
   // Comprobar si ya existe una sesión activa al abrir la página.
   supabaseClient.auth.getSession().then(({ data, error }) => {
     if (error) {
