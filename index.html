@@ -1256,12 +1256,10 @@ if (
 
   // Subir un archivo al repositorio privado.
   botonSubir.addEventListener('click', async () => {
-    if (!perfilActual ||
-        !['administrador', 'direccion', 'docente'].includes(perfilActual)) {
-      estado.textContent =
-        'No tienes permisos para subir materiales.';
-      return;
-    }
+   if (!['administrador', 'docente'].includes(perfilActual)) {
+  estado.textContent = 'Solo administrador y docentes pueden subir materiales.';
+  return;
+}
 
     const file = archivo.files[0];
 
