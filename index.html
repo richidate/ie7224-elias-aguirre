@@ -288,6 +288,28 @@ section {
   font-size: 14px;
 }
 
+.gallery-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid #e4e7ed;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 7px 20px #17203308;
+}
+.gallery-card img, .gallery-card video, .gallery-card iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border: 0;
+  background: #172033;
+}
+.gallery-card-body { padding: 15px; }
+.gallery-card-body h3 { margin: 0 0 7px; font-size: 18px; }
+.gallery-card-body p { margin: 0; color: var(--gris); white-space: pre-wrap; }
+.gallery-admin-item { padding: 14px 0; border-bottom: 1px solid #e4e7ed; }
+.gallery-admin-item h4 { margin: 0 0 6px; }
+
 .staff {
   background: #172033;
   color: white;
@@ -648,25 +670,12 @@ footer small {
   <div class="wrap">
     <div class="intro">
       <div class="eyebrow" style="color:#b62538">Nuestra comunidad</div>
-      <h2>Actividades y experiencias</h2>
-      <p>Espacios reservados para fotografías autorizadas de actividades escolares.</p>
+      <h2>Galería multimedia</h2>
+      <p>Fotografías y videos de las actividades y experiencias de nuestra comunidad educativa.</p>
     </div>
 
-    <div class="gallery">
-      <div class="tile">
-        <strong>Aprendizaje en el aula</strong>
-        <span>Fotografías por incorporar</span>
-      </div>
-
-      <div class="tile">
-        <strong>Cultura y creatividad</strong>
-        <span>Fotografías por incorporar</span>
-      </div>
-
-      <div class="tile">
-        <strong>Deporte y convivencia</strong>
-        <span>Fotografías por incorporar</span>
-      </div>
+    <div class="gallery" id="galeria-publica" aria-live="polite">
+      <article class="notice"><p>Cargando fotografías y videos...</p></article>
     </div>
   </div>
 </section>
@@ -733,6 +742,34 @@ footer small {
     <div class="panel-box">
       <h2>Panel de administración — IE 7224</h2>
       <p>Gestión de materiales institucionales</p>
+
+      <div id="gestion-galeria" hidden>
+        <hr>
+        <h3>Administrar galería multimedia</h3>
+        <p>Sube fotos o videos desde tu dispositivo, o pega un enlace de YouTube. Marca “Publicar” para mostrarlos en la página pública.</p>
+        <form id="form-galeria">
+          <input type="hidden" id="galeria-id">
+          <label for="galeria-titulo">Título</label>
+          <input id="galeria-titulo" type="text" maxlength="180" required placeholder="Ej. Maratón de lectura 2026">
+          <label for="galeria-descripcion">Descripción (opcional)</label>
+          <textarea id="galeria-descripcion" rows="3" maxlength="2000" placeholder="Describe la actividad"></textarea>
+          <label for="galeria-tipo">Tipo de contenido</label>
+          <select id="galeria-tipo" required>
+            <option value="imagen">Fotografía</option>
+            <option value="video">Video</option>
+          </select>
+          <label for="galeria-archivo">Archivo de foto o video (opcional si usarás YouTube)</label>
+          <input id="galeria-archivo" type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime">
+          <label for="galeria-youtube">Enlace de YouTube (para videos, opcional)</label>
+          <input id="galeria-youtube" type="url" placeholder="https://www.youtube.com/watch?v=...">
+          <label class="check-line"><input id="galeria-publicado" type="checkbox" checked> Publicar inmediatamente</label>
+          <button class="btn red" id="guardar-galeria" type="submit">Guardar contenido</button>
+          <button class="btn" id="cancelar-edicion-galeria" type="button" hidden>Cancelar edición</button>
+        </form>
+        <p id="estado-galeria" role="status" aria-live="polite"></p>
+        <h3>Contenido registrado</h3>
+        <div id="lista-galeria-admin"></div>
+      </div>
 
       <div id="gestion-comunicados" hidden>
         <hr>
@@ -890,6 +927,13 @@ footer small {
   const estado = document.getElementById('estado-material');
   const lista = document.getElementById('lista-materiales');
   const gestionComunicados = document.getElementById('gestion-comunicados');
+  const gestionGaleria = document.getElementById('gestion-galeria');
+  const galeriaPublica = document.getElementById('galeria-publica');
+  const formGaleria = document.getElementById('form-galeria');
+  const estadoGaleria = document.getElementById('estado-galeria');
+  const listaGaleriaAdmin = document.getElementById('lista-galeria-admin');
+  const botonGuardarGaleria = document.getElementById('guardar-galeria');
+  const botonCancelarEdicionGaleria = document.getElementById('cancelar-edicion-galeria');
   const listaComunicadosPublicos = document.getElementById('lista-comunicados-publicos');
   const listaComunicadosAdmin = document.getElementById('lista-comunicados-admin');
   const formComunicado = document.getElementById('form-comunicado');
@@ -957,6 +1001,162 @@ footer small {
       }
       listaComunicadosPublicos.appendChild(tarjeta);
     });
+  }
+
+  function urlVideoEmbed(url) {
+    try {
+      const u = new URL(url);
+      let id = '';
+      if (u.hostname.includes('youtu.be')) id = u.pathname.split('/').filter(Boolean)[0] || '';
+      else if (u.hostname.includes('youtube.com')) {
+        if (u.pathname === '/watch') id = u.searchParams.get('v') || '';
+        else if (u.pathname.startsWith('/embed/')) id = u.pathname.split('/')[2] || '';
+        else if (u.pathname.startsWith('/shorts/')) id = u.pathname.split('/')[2] || '';
+      }
+      return /^[A-Za-z0-9_-]{11}$/.test(id) ? 'https://www.youtube-nocookie.com/embed/' + id : null;
+    } catch (_) { return null; }
+  }
+
+  async function cargarGaleriaPublica() {
+    if (!galeriaPublica) return;
+    const { data, error } = await supabaseClient.from('galeria_multimedia')
+      .select('id,titulo,descripcion,tipo,url,publicado,creado_en')
+      .eq('publicado', true).order('creado_en', { ascending: false });
+    galeriaPublica.replaceChildren();
+    if (error) {
+      const aviso = document.createElement('article'); aviso.className = 'notice';
+      aviso.textContent = 'No se pudo cargar la galería en este momento.';
+      galeriaPublica.appendChild(aviso); console.error('Error al cargar galería:', error); return;
+    }
+    if (!data || data.length === 0) {
+      const aviso = document.createElement('article'); aviso.className = 'notice';
+      const h = document.createElement('h3'); h.textContent = 'Próximamente';
+      const p = document.createElement('p'); p.textContent = 'Aquí compartiremos fotografías y videos de nuestras actividades escolares.';
+      aviso.append(h,p); galeriaPublica.appendChild(aviso); return;
+    }
+    data.forEach(item => {
+      const card = document.createElement('article'); card.className = 'gallery-card';
+      if (item.tipo === 'video') {
+        const embed = urlVideoEmbed(item.url);
+        if (embed) {
+          const frame = document.createElement('iframe'); frame.src = embed;
+          frame.title = item.titulo || 'Video institucional'; frame.loading = 'lazy';
+          frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+          frame.allowFullscreen = true; card.appendChild(frame);
+        } else {
+          const video = document.createElement('video'); video.src = item.url; video.controls = true; video.preload = 'metadata'; card.appendChild(video);
+        }
+      } else {
+        const img = document.createElement('img'); img.src = item.url; img.alt = item.titulo || 'Fotografía escolar'; img.loading = 'lazy'; card.appendChild(img);
+      }
+      const body = document.createElement('div'); body.className = 'gallery-card-body';
+      const h = document.createElement('h3'); h.textContent = item.titulo;
+      body.appendChild(h);
+      if (item.descripcion) { const p = document.createElement('p'); p.textContent = item.descripcion; body.appendChild(p); }
+      card.appendChild(body); galeriaPublica.appendChild(card);
+    });
+  }
+
+  function limpiarFormularioGaleria() {
+    formGaleria.reset();
+    document.getElementById('galeria-id').value = '';
+    document.getElementById('galeria-publicado').checked = true;
+    botonGuardarGaleria.textContent = 'Guardar contenido';
+    botonCancelarEdicionGaleria.hidden = true;
+  }
+
+  async function cargarGaleriaAdmin() {
+    if (perfilActual !== 'administrador' || !listaGaleriaAdmin) return;
+    estadoGaleria.textContent = 'Cargando galería...';
+    const { data, error } = await supabaseClient.from('galeria_multimedia')
+      .select('id,titulo,descripcion,tipo,url,storage_path,publicado,creado_en')
+      .order('creado_en', { ascending: false });
+    listaGaleriaAdmin.replaceChildren();
+    if (error) { estadoGaleria.textContent = 'No se pudo cargar la galería: ' + error.message; return; }
+    if (!data || !data.length) { listaGaleriaAdmin.textContent = 'Todavía no hay contenido registrado.'; estadoGaleria.textContent = ''; return; }
+    data.forEach(item => {
+      const box = document.createElement('div'); box.className = 'gallery-admin-item';
+      const h = document.createElement('h4'); h.textContent = item.titulo;
+      const p = document.createElement('p'); p.textContent = `${item.tipo === 'video' ? 'Video' : 'Fotografía'} · ${item.publicado ? 'Publicado' : 'Borrador'}`;
+      const edit = document.createElement('button'); edit.type = 'button'; edit.className = 'btn'; edit.textContent = 'Editar';
+      edit.addEventListener('click', () => {
+        document.getElementById('galeria-id').value = item.id;
+        document.getElementById('galeria-titulo').value = item.titulo || '';
+        document.getElementById('galeria-descripcion').value = item.descripcion || '';
+        document.getElementById('galeria-tipo').value = item.tipo || 'imagen';
+        document.getElementById('galeria-youtube').value = item.tipo === 'video' && urlVideoEmbed(item.url) ? item.url : '';
+        document.getElementById('galeria-publicado').checked = !!item.publicado;
+        document.getElementById('galeria-archivo').value = '';
+        botonGuardarGaleria.textContent = 'Guardar cambios'; botonCancelarEdicionGaleria.hidden = false;
+        formGaleria.scrollIntoView({behavior:'smooth', block:'start'});
+      });
+      const del = document.createElement('button'); del.type = 'button'; del.className = 'btn red'; del.textContent = 'Eliminar';
+      del.addEventListener('click', async () => {
+        if (!confirm('¿Eliminar este contenido de la galería?')) return;
+        estadoGaleria.textContent = 'Eliminando...';
+        if (item.storage_path) {
+          const { error: storageError } = await supabaseClient.storage.from('galeria-ie7224').remove([item.storage_path]);
+          if (storageError) { estadoGaleria.textContent = 'No se pudo eliminar el archivo: ' + storageError.message; return; }
+        }
+        const { error: deleteError } = await supabaseClient.from('galeria_multimedia').delete().eq('id', item.id);
+        if (deleteError) { estadoGaleria.textContent = 'No se pudo eliminar: ' + deleteError.message; return; }
+        estadoGaleria.textContent = 'Contenido eliminado.'; await cargarGaleriaAdmin(); await cargarGaleriaPublica();
+      });
+      box.append(h,p,edit,document.createTextNode(' '),del); listaGaleriaAdmin.appendChild(box);
+    });
+    estadoGaleria.textContent = '';
+  }
+
+  if (formGaleria) {
+    formGaleria.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (perfilActual !== 'administrador') { estadoGaleria.textContent = 'Solo administración puede gestionar la galería.'; return; }
+      const id = document.getElementById('galeria-id').value;
+      const titulo = document.getElementById('galeria-titulo').value.trim();
+      const descripcion = document.getElementById('galeria-descripcion').value.trim();
+      const tipo = document.getElementById('galeria-tipo').value;
+      const file = document.getElementById('galeria-archivo').files[0];
+      const youtube = document.getElementById('galeria-youtube').value.trim();
+      const publicado = document.getElementById('galeria-publicado').checked;
+      let url = null, storage_path = null;
+      botonGuardarGaleria.disabled = true; estadoGaleria.textContent = 'Guardando contenido...';
+      try {
+        if (file) {
+          const validImage = ['image/jpeg','image/png','image/webp','image/gif'].includes(file.type);
+          const validVideo = ['video/mp4','video/webm','video/quicktime'].includes(file.type);
+          if ((tipo === 'imagen' && !validImage) || (tipo === 'video' && !validVideo)) throw new Error('El archivo no coincide con el tipo seleccionado. Fotos: JPG, PNG, WEBP o GIF. Videos: MP4, WEBM o MOV.');
+          if (file.size > 50 * 1024 * 1024) throw new Error('El archivo supera el límite de 50 MB. Para videos pesados, usa un enlace de YouTube.');
+          const ext = (file.name.split('.').pop() || 'bin').replace(/[^a-zA-Z0-9]/g,'').toLowerCase();
+          storage_path = `${Date.now()}-${Math.random().toString(36).slice(2,10)}.${ext}`;
+          const { error: uploadError } = await supabaseClient.storage.from('galeria-ie7224').upload(storage_path, file, { upsert: false, contentType: file.type });
+          if (uploadError) throw uploadError;
+          const { data: publicData } = supabaseClient.storage.from('galeria-ie7224').getPublicUrl(storage_path);
+          url = publicData.publicUrl;
+        } else if (tipo === 'video' && youtube) {
+          if (!urlVideoEmbed(youtube)) throw new Error('Pega un enlace válido de YouTube.');
+          url = youtube;
+        } else if (id) {
+          const { data: current, error: currentError } = await supabaseClient.from('galeria_multimedia').select('url,storage_path,tipo').eq('id', id).single();
+          if (currentError) throw currentError;
+          url = current.url; storage_path = current.storage_path;
+          if (tipo !== current.tipo && !file && !youtube) throw new Error('Selecciona un archivo o enlace para cambiar el tipo de contenido.');
+        } else {
+          throw new Error(tipo === 'video' ? 'Selecciona un video o pega un enlace de YouTube.' : 'Selecciona una fotografía.');
+        }
+        const payload = { titulo, descripcion: descripcion || null, tipo, url, storage_path, publicado };
+        const result = id
+          ? await supabaseClient.from('galeria_multimedia').update(payload).eq('id', id)
+          : await supabaseClient.from('galeria_multimedia').insert([payload]);
+        if (result.error) {
+          if (storage_path && file) await supabaseClient.storage.from('galeria-ie7224').remove([storage_path]);
+          throw result.error;
+        }
+        limpiarFormularioGaleria(); estadoGaleria.textContent = 'Contenido guardado correctamente.';
+        await cargarGaleriaAdmin(); await cargarGaleriaPublica();
+      } catch (error) { console.error(error); estadoGaleria.textContent = 'Error: ' + (error.message || 'No se pudo guardar el contenido.'); }
+      finally { botonGuardarGaleria.disabled = false; }
+    });
+    botonCancelarEdicionGaleria.addEventListener('click', limpiarFormularioGaleria);
   }
 
   function limpiarFormularioComunicado() {
@@ -1107,6 +1307,7 @@ footer small {
         perfilActual = null;
         panel.hidden = true;
         gestionComunicados.hidden = true;
+        gestionGaleria.hidden = true;
         lista.replaceChildren();
         estado.textContent = '';
         return;
@@ -1155,10 +1356,12 @@ footer small {
       perfilActual = perfil.tipo_usuario;
       panel.hidden = false;
       gestionComunicados.hidden = perfilActual !== 'administrador';
+      gestionGaleria.hidden = perfilActual !== 'administrador';
 
       await cargarMateriales();
       if (perfilActual === 'administrador') {
         await cargarComunicadosAdmin();
+        await cargarGaleriaAdmin();
         await cargarSolicitudes();
       }
 
@@ -1444,6 +1647,7 @@ if (
 });
   // Cargar los comunicados públicos sin requerir inicio de sesión.
   cargarComunicadosPublicos();
+  cargarGaleriaPublica();
 
   // Comprobar si ya existe una sesión activa al abrir la página.
   supabaseClient.auth.getSession().then(({ data, error }) => {
