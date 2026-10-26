@@ -1,0 +1,2080 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Portal institucional de la Institución Educativa N.º 7224 Elías Aguirre">
+<title>I.E. N.º 7224 Elías Aguirre</title>
+
+<style>
+:root {
+  --rojo: #8e1727;
+  --oro: #e9b949;
+  --tinta: #172033;
+  --gris: #626b7b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--tinta);
+  background: #f7f8fb;
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.wrap {
+  width: min(1120px, 92%);
+  margin: auto;
+}
+
+.top {
+  background: #65101c;
+  color: white;
+  padding: 8px 0;
+  font-size: 14px;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 14px 0;
+  flex-wrap: wrap;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand img {
+  width: 58px;
+  height: 58px;
+  object-fit: contain;
+}
+
+.brand strong {
+  display: block;
+  color: var(--rojo);
+}
+
+.brand small {
+  color: var(--gris);
+}
+
+header {
+  background: white;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  box-shadow: 0 3px 14px #0001;
+}
+
+nav {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+nav a:hover {
+  color: var(--rojo);
+}
+
+.btn {
+  display: inline-block;
+  padding: 11px 18px;
+  border-radius: 999px;
+  background: var(--oro);
+  color: #30240a;
+  font-weight: bold;
+  border: 0;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.red {
+  background: var(--rojo);
+  color: white;
+}
+
+.hero {
+  background: linear-gradient(120deg, #4e0b18ed, #991e31e8);
+  color: white;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 35px;
+  align-items: center;
+  padding: 70px 0;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--oro);
+}
+
+h1 {
+  font-size: clamp(38px, 5vw, 68px);
+  line-height: 1.05;
+  margin: 14px 0;
+}
+
+h2 {
+  font-size: clamp(28px, 3.5vw, 42px);
+  line-height: 1.15;
+  margin: 8px 0 12px;
+}
+
+p {
+  color: var(--gris);
+}
+
+.hero p {
+  color: #f7e8eb;
+  font-size: 18px;
+}
+
+.hero .btn {
+  margin: 8px 8px 0 0;
+}
+
+.seal {
+  padding: 28px;
+  background: #ffffff12;
+  border: 1px solid #ffffff38;
+  border-radius: 24px;
+  text-align: center;
+}
+
+.seal img {
+  max-width: 170px;
+  max-height: 190px;
+  object-fit: contain;
+}
+
+.seal h3 {
+  margin-bottom: 5px;
+}
+
+.seal p {
+  color: #f7e8eb;
+  margin-top: 0;
+}
+
+section {
+  padding: 64px 0;
+}
+
+.intro {
+  max-width: 720px;
+  margin-bottom: 28px;
+}
+
+.intro p {
+  margin-top: 0;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.card,
+.notice,
+.contact {
+  background: white;
+  border: 1px solid #e4e7ed;
+  border-radius: 18px;
+  padding: 23px;
+  box-shadow: 0 7px 20px #17203308;
+}
+
+.card h3,
+.notice h3 {
+  margin: 6px 0;
+}
+
+.icon {
+  font-size: 26px;
+  background: #fff0d0;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+}
+
+.light {
+  background: white;
+}
+
+.news {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.notice {
+  margin-bottom: 14px;
+}
+
+.notice small {
+  color: var(--rojo);
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.banner {
+  padding: 26px;
+  border-radius: 20px;
+  background: #fff0d0;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.tile {
+  min-height: 160px;
+  border-radius: 18px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background: linear-gradient(140deg, #f2d5da, #fff0d0);
+  border: 1px solid #eadde0;
+}
+
+.tile:nth-child(2) {
+  background: linear-gradient(140deg, #dfe7f6, #fff);
+}
+
+.tile:nth-child(3) {
+  background: linear-gradient(140deg, #dfeee4, #fff);
+}
+
+.tile span {
+  color: var(--gris);
+  font-size: 14px;
+}
+
+.gallery-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid #e4e7ed;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 7px 20px #17203308;
+}
+.gallery-card img, .gallery-card video, .gallery-card iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border: 0;
+  background: #172033;
+}
+.gallery-card-body { padding: 15px; }
+.gallery-card-body h3 { margin: 0 0 7px; font-size: 18px; }
+.gallery-card-body p { margin: 0; color: var(--gris); white-space: pre-wrap; }
+.gallery-admin-item { padding: 14px 0; border-bottom: 1px solid #e4e7ed; }
+.gallery-admin-item h4 { margin: 0 0 6px; }
+
+.staff {
+  background: #172033;
+  color: white;
+}
+
+.staff p {
+  color: #d8deeb;
+}
+
+.staff-grid,
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: center;
+}
+
+.staffbox {
+  padding: 24px;
+  background: #ffffff10;
+  border: 1px solid #ffffff2c;
+  border-radius: 20px;
+}
+
+.contact-grid {
+  align-items: stretch;
+}
+
+/* Panel de materiales */
+
+#panel-materiales {
+  padding: 30px 0;
+  background: #f7f8fb;
+}
+
+.panel-box {
+  max-width: 900px;
+  margin: auto;
+  padding: 25px;
+  background: white;
+  border: 1px solid #e4e7ed;
+  border-radius: 18px;
+  box-shadow: 0 7px 20px #17203308;
+  overflow-wrap: anywhere;
+}
+
+.panel-box h2 {
+  color: var(--rojo);
+  font-size: 30px;
+}
+
+.panel-box input[type="file"] {
+  display: block;
+  max-width: 100%;
+  margin: 16px 0;
+}
+
+#lista-materiales {
+  padding-left: 20px;
+}
+
+#lista-materiales li {
+  margin: 12px 0;
+}
+
+#form-comunicado { display: grid; gap: 9px; margin: 16px 0 22px; }
+#form-comunicado input:not([type="checkbox"]),
+#form-comunicado select, #form-comunicado textarea {
+  width: 100%; max-width: 100%; padding: 11px; border: 1px solid #ccd2dd;
+  border-radius: 8px; font: inherit; box-sizing: border-box;
+}
+#form-comunicado label { font-weight: 600; }
+#form-comunicado .check-line { display: flex; align-items: center; gap: 9px; font-weight: normal; }
+.comunicado-admin { border: 1px solid #e4e7ed; border-radius: 12px; padding: 14px; margin: 10px 0; }
+.comunicado-admin p { white-space: pre-wrap; }
+.comunicado-admin button { margin: 4px 6px 0 0; }
+.estado-comunicado { color: var(--gris); font-size: 14px; }
+
+#lista-materiales button {
+  margin: 4px;
+  padding: 7px 12px;
+  border: 0;
+  border-radius: 7px;
+  background: var(--oro);
+  cursor: pointer;
+}
+
+#lista-materiales button:last-child {
+  color: white;
+  background: var(--rojo);
+}
+
+#estado-material {
+  overflow-wrap: anywhere;
+}
+
+footer {
+  background: #111827;
+  color: white;
+  padding: 25px 0;
+}
+
+footer .wrap {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+footer small {
+  color: #c5ccda;
+}
+
+/* Ventana de inicio de sesión */
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #08101dcc;
+  z-index: 20;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.box {
+  background: white;
+  border-radius: 20px;
+  padding: 28px;
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.box p {
+  color: var(--gris);
+}
+
+.close {
+  float: right;
+  background: none;
+  border: 0;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+#login-message {
+  overflow-wrap: anywhere;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+@media (max-width: 780px) {
+  .hero-grid,
+  .news,
+  .staff-grid,
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cards,
+  .gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hero-grid {
+    padding: 48px 0;
+  }
+}
+
+@media (max-width: 540px) {
+  .cards,
+  .gallery {
+    grid-template-columns: 1fr;
+  }
+
+  section {
+    padding: 48px 0;
+  }
+
+  .nav {
+    display: block;
+  }
+
+  .brand {
+    margin-bottom: 12px;
+  }
+
+  nav {
+    gap: 11px;
+  }
+
+  .seal img {
+    max-height: 145px;
+  }
+
+  .panel-box {
+    padding: 17px;
+  }
+}
+
+/* ===== MEJORA VISUAL INSTITUCIONAL: solo estilos, sin modificar funciones ===== */
+:root {
+  --rojo: #8e1727;
+  --oro: #e9b949;
+  --tinta: #172033;
+  --gris: #626b7b;
+  --fondo-suave: #f5f6fa;
+}
+body {
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  background: var(--fondo-suave);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: #e9b94966; color: #30151a; }
+a, button, input, select, textarea { transition: color .2s ease, background .2s ease, box-shadow .2s ease, transform .2s ease; }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 3px solid #e9b949;
+  outline-offset: 3px;
+}
+.top {
+  background: linear-gradient(90deg, #4d0b17, #751525);
+  letter-spacing: .02em;
+}
+header {
+  background: rgba(255,255,255,.97);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid #8e17270d;
+}
+.brand img {
+  filter: drop-shadow(0 3px 5px #17203312);
+}
+.brand strong { letter-spacing: -.025em; }
+nav a {
+  padding: 8px 2px;
+  position: relative;
+}
+nav a::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 1px;
+  height: 2px;
+  background: var(--oro);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .2s ease;
+}
+nav a:hover::after { transform: scaleX(1); }
+.btn {
+  box-shadow: 0 5px 14px #17203312;
+  letter-spacing: .01em;
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 9px 20px #17203320;
+}
+.btn.red { background: linear-gradient(135deg, #8e1727, #68101d); }
+.hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 85% 15%, #e9b9492b, transparent 34%),
+    linear-gradient(125deg, #3f0914 0%, #761525 54%, #9b2336 100%);
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 360px; height: 360px;
+  right: -130px; bottom: -210px;
+  border: 1px solid #ffffff20;
+  border-radius: 50%;
+  box-shadow: 0 0 0 35px #ffffff08, 0 0 0 70px #ffffff06;
+  pointer-events: none;
+}
+.hero-grid { position: relative; z-index: 1; }
+.hero h1 { letter-spacing: -.045em; text-wrap: balance; }
+.hero p { max-width: 650px; }
+.seal {
+  background: linear-gradient(145deg, #ffffff18, #ffffff08);
+  border-color: #ffffff40;
+  box-shadow: 0 20px 55px #23050b35;
+  backdrop-filter: blur(8px);
+}
+.seal img { filter: drop-shadow(0 8px 12px #0002); }
+section { scroll-margin-top: 110px; }
+.intro { max-width: 780px; }
+.intro h2, .panel-box h2 { letter-spacing: -.035em; }
+.card, .notice, .contact {
+  border-color: #e7e9ef;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px #17203308;
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+}
+.card:hover, .notice:hover, .contact:hover {
+  transform: translateY(-4px);
+  border-color: #e9b9498c;
+  box-shadow: 0 16px 34px #17203312;
+}
+.icon { box-shadow: inset 0 0 0 1px #8e172710; }
+.banner {
+  background: linear-gradient(135deg, #fff3d6, #fffaf0);
+  border: 1px solid #f0dfb7;
+}
+.tile {
+  border-radius: 20px;
+  box-shadow: 0 8px 22px #1720330b;
+  transition: transform .22s ease, box-shadow .22s ease;
+}
+.tile:hover { transform: translateY(-4px); box-shadow: 0 15px 30px #17203314; }
+.staff {
+  background:
+    radial-gradient(ellipse at 95% 0%, #8e172744, transparent 42%),
+    linear-gradient(135deg, #111827, #202b42);
+}
+.staffbox {
+  box-shadow: 0 15px 35px #0002;
+  backdrop-filter: blur(8px);
+}
+.panel-box {
+  border-radius: 22px;
+  border-color: #e2e5ec;
+  box-shadow: 0 15px 45px #1720330d;
+}
+.panel-box hr { border: 0; border-top: 1px solid #e6e8ef; margin: 28px 0; }
+.panel-box label, .box label { display: block; font-weight: 650; margin-top: 12px; }
+.panel-box input:not([type="file"]),
+.panel-box select,
+.panel-box textarea,
+.box input,
+.box select,
+.box textarea {
+  width: 100%;
+  max-width: 100%;
+  min-height: 44px;
+  padding: 11px 13px;
+  margin: 6px 0 14px;
+  border: 1px solid #d8dce5;
+  border-radius: 11px;
+  background: #fff;
+  color: var(--tinta);
+  font: inherit;
+}
+.panel-box input:focus, .panel-box select:focus, .panel-box textarea:focus,
+.box input:focus, .box select:focus, .box textarea:focus {
+  border-color: var(--rojo);
+  box-shadow: 0 0 0 4px #8e172712;
+  outline: none;
+}
+#lista-materiales { padding-left: 0; list-style: none; }
+#lista-materiales li {
+  padding: 14px;
+  border: 1px solid #e5e7ed;
+  border-radius: 12px;
+  background: #fbfcfe;
+}
+.modal { backdrop-filter: blur(5px); }
+.box {
+  border: 1px solid #ffffff80;
+  box-shadow: 0 24px 80px #0004;
+}
+#solicitud-acceso { background: #fafbfe; border-color: #e4e7ef !important; }
+footer {
+  background: linear-gradient(120deg, #0d1422, #202b40);
+}
+footer .wrap { align-items: center; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+}
+@media (max-width: 780px) {
+  .nav { gap: 12px; }
+  nav { gap: 10px 14px; }
+  .hero-grid { gap: 25px; }
+}
+@media (max-width: 540px) {
+  .top { font-size: 12px; }
+  .brand img { width: 48px; height: 48px; }
+  .brand strong { font-size: 14px; }
+  .brand small { font-size: 11px; }
+  nav { padding-bottom: 5px; font-size: 13px; }
+  .hero-grid { padding: 44px 0; }
+  .hero h1 { font-size: clamp(35px, 10vw, 46px); }
+  .hero p { font-size: 16px; }
+  .hero .btn { margin-right: 4px; }
+  .seal { padding: 22px; }
+  section { padding: 44px 0; }
+  .card, .notice, .contact { padding: 20px; }
+  .panel-box { border-radius: 16px; }
+  .box { padding: 22px; }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="top">
+  <div class="wrap">
+    Portal institucional · Comunidad educativa · Primaria y secundaria
+  </div>
+</div>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#inicio">
+      <img src="assets/insignia-elias-aguirre.jpg"
+           alt="Insignia institucional"
+           onerror="this.style.display='none'">
+      <span>
+        <strong>Institución Educativa N.º 7224</strong>
+        <small>ELÍAS AGUIRRE · Lima, Perú</small>
+      </span>
+    </a>
+
+    <nav>
+      <a href="#institucion">Institución</a>
+      <a href="#niveles">Niveles</a>
+      <a href="#comunicados">Comunicados</a>
+      <a href="#actividades">Actividades</a>
+      <a href="#contacto">Contacto</a>
+      <button class="btn red" type="button" data-open>Área docente</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<section class="hero" id="inicio">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Educación · Comunidad · Futuro</div>
+      <h1>Aprendemos hoy.<br>Construimos el mañana.</h1>
+      <p>
+        Bienvenidos al portal de la Institución Educativa N.º 7224 Elías Aguirre,
+        un espacio para compartir información institucional, actividades y
+        comunicados con nuestra comunidad educativa.
+      </p>
+      <a class="btn" href="#institucion">Conoce el colegio</a>
+      <a class="btn" href="#comunicados">Ver comunicados</a>
+    </div>
+
+    <div class="seal">
+      <img src="assets/insignia-elias-aguirre.jpg"
+           alt="Insignia de la institución"
+           onerror="this.style.display='none'">
+      <h3>Una comunidad que crece unida</h3>
+      <p>Información para estudiantes, familias, docentes y personal.</p>
+    </div>
+  </div>
+</section>
+
+<section id="institucion">
+  <div class="wrap">
+    <div class="intro">
+      <div class="eyebrow" style="color:#b62538">Nuestra institución</div>
+      <h2>Un espacio para aprender y crecer</h2>
+      <p>
+        Este portal reúne información pública de nuestra comunidad educativa.
+        Los datos específicos de la institución se incorporarán cuando sean
+        confirmados oficialmente.
+      </p>
+    </div>
+
+    <div class="cards">
+      <article class="card">
+        <div class="icon">🎯</div>
+        <h3>Nuestro propósito</h3>
+        <p>Promover aprendizajes, convivencia respetuosa y desarrollo integral de los estudiantes.</p>
+      </article>
+
+      <article class="card">
+        <div class="icon">🤝</div>
+        <h3>Comunidad educativa</h3>
+        <p>Familias, estudiantes, docentes y personal trabajando juntos por mejores oportunidades.</p>
+      </article>
+
+      <article class="card">
+        <div class="icon">🌱</div>
+        <h3>Valores</h3>
+        <p>Respeto, responsabilidad, solidaridad y compromiso con el aprendizaje.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="light" id="niveles">
+  <div class="wrap">
+    <div class="intro">
+      <div class="eyebrow" style="color:#b62538">Oferta educativa</div>
+      <h2>Primaria y secundaria</h2>
+      <p>Dos etapas importantes para desarrollar conocimientos, habilidades y valores para la vida.</p>
+    </div>
+
+    <div class="cards">
+      <article class="card">
+        <div class="icon">📘</div>
+        <h3>Educación primaria</h3>
+        <p>Aprendizajes fundamentales, curiosidad, hábitos de estudio y convivencia.</p>
+      </article>
+
+      <article class="card">
+        <div class="icon">🎓</div>
+        <h3>Educación secundaria</h3>
+        <p>Formación académica, pensamiento crítico, autonomía y preparación para nuevos desafíos.</p>
+      </article>
+
+      <article class="card">
+        <div class="icon">🧩</div>
+        <h3>Actividades formativas</h3>
+        <p>Proyectos, eventos, logros y experiencias de la vida escolar.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="comunicados">
+  <div class="wrap">
+    <div class="intro">
+      <div class="eyebrow" style="color:#b62538">Información al día</div>
+      <h2>Noticias y comunicados</h2>
+      <p>
+        Avisos, fechas e información oficial publicados por la institución.
+      </p>
+    </div>
+
+    <div class="news">
+      <div id="lista-comunicados-publicos" aria-live="polite">
+        <article class="notice"><p>Cargando comunicados...</p></article>
+      </div>
+
+      <aside class="banner">
+        <h3>Publicación responsable</h3>
+        <p>Los avisos deben ser revisados y autorizados por el personal responsable antes de publicarse.</p>
+        <a class="btn red" href="#contacto">Ver información</a>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="light" id="actividades">
+  <div class="wrap">
+    <div class="intro">
+      <div class="eyebrow" style="color:#b62538">Nuestra comunidad</div>
+      <h2>Galería multimedia</h2>
+      <p>Fotografías y videos de las actividades y experiencias de nuestra comunidad educativa.</p>
+    </div>
+
+    <div class="gallery" id="galeria-publica" aria-live="polite">
+      <article class="notice"><p>Cargando fotografías y videos...</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="staff" id="docentes">
+  <div class="wrap staff-grid">
+    <div>
+      <div class="eyebrow">Personal autorizado</div>
+      <h2>Área docente</h2>
+      <p>
+        Espacio para acceder a materiales y recursos institucionales
+        mediante una cuenta autorizada.
+      </p>
+    </div>
+
+    <div class="staffbox">
+      <h3>Recursos para docentes</h3>
+      <p>Acceso al repositorio institucional privado para gestionar materiales.</p>
+      <button class="btn" type="button" data-open>Ingresar al área docente</button>
+    </div>
+  </div>
+</section>
+
+<section id="contacto">
+  <div class="wrap">
+    <div class="intro">
+      <div class="eyebrow" style="color:#b62538">Estamos en contacto</div>
+      <h2>Información institucional</h2>
+      <p>Completar estos datos con información oficial antes de difundir el portal.</p>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact">
+        <h3>I.E. N.º 7224 Elías Aguirre</h3>
+        <p>Atención educativa en primaria y secundaria.</p>
+        <p><strong>Dirección:</strong> pendiente de confirmar</p>
+        <p><strong>Teléfono / correo:</strong> pendiente de confirmar</p>
+      </div>
+
+      <div class="contact">
+        <h3>Para las familias</h3>
+        <p>Consulta comunicados oficiales y mantente al tanto de las actividades de la comunidad educativa.</p>
+        <p>Por protección de datos, no publiques información privada de estudiantes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <strong>I.E. N.º 7224 Elías Aguirre</strong><br>
+      <small>Portal institucional · Primaria y secundaria</small>
+    </div>
+    <small>La información institucional debe validarse antes de difundirse.</small>
+  </div>
+</footer>
+
+<!-- PANEL DE MATERIALES: inicialmente oculto -->
+<section id="panel-materiales" hidden>
+  <div class="wrap">
+    <div class="panel-box">
+      <h2>Panel de administración — IE 7224</h2>
+      <p>Gestión de materiales institucionales</p>
+
+      <div id="gestion-galeria" hidden>
+        <hr>
+        <h3>Administrar galería multimedia</h3>
+        <p>Sube fotos o videos desde tu dispositivo, o pega un enlace de YouTube. Marca “Publicar” para mostrarlos en la página pública.</p>
+        <form id="form-galeria">
+          <input type="hidden" id="galeria-id">
+          <label for="galeria-titulo">Título</label>
+          <input id="galeria-titulo" type="text" maxlength="180" required placeholder="Ej. Maratón de lectura 2026">
+          <label for="galeria-descripcion">Descripción (opcional)</label>
+          <textarea id="galeria-descripcion" rows="3" maxlength="2000" placeholder="Describe la actividad"></textarea>
+          <label for="galeria-tipo">Tipo de contenido</label>
+          <select id="galeria-tipo" required>
+            <option value="imagen">Fotografía</option>
+            <option value="video">Video</option>
+          </select>
+          <label for="galeria-archivo">Archivo de foto o video (opcional si usarás YouTube)</label>
+          <input id="galeria-archivo" type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime">
+          <label for="galeria-youtube">Enlace de YouTube (para videos, opcional)</label>
+          <input id="galeria-youtube" type="url" placeholder="https://www.youtube.com/watch?v=...">
+          <label class="check-line"><input id="galeria-publicado" type="checkbox" checked> Publicar inmediatamente</label>
+          <button class="btn red" id="guardar-galeria" type="submit">Guardar contenido</button>
+          <button class="btn" id="cancelar-edicion-galeria" type="button" hidden>Cancelar edición</button>
+        </form>
+        <p id="estado-galeria" role="status" aria-live="polite"></p>
+        <h3>Contenido registrado</h3>
+        <div id="lista-galeria-admin"></div>
+      </div>
+
+      <div id="gestion-comunicados" hidden>
+        <hr>
+        <h3>Publicar y administrar comunicados</h3>
+        <p>Los comunicados publicados aparecerán automáticamente en la página principal.</p>
+        <form id="form-comunicado">
+          <input type="hidden" id="comunicado-id">
+          <label for="comunicado-titulo">Título</label>
+          <input id="comunicado-titulo" type="text" maxlength="180" required placeholder="Título del comunicado">
+          <label for="comunicado-categoria">Categoría</label>
+          <select id="comunicado-categoria" required>
+            <option>Comunicado institucional</option>
+            <option>Actividades escolares</option>
+            <option>Información académica</option>
+            <option>Convocatorias</option>
+            <option>Otros avisos</option>
+          </select>
+          <label for="comunicado-contenido">Contenido</label>
+          <textarea id="comunicado-contenido" rows="5" maxlength="10000" required placeholder="Escribe aquí la información que se publicará"></textarea>
+          <label class="check-line"><input id="comunicado-publicado" type="checkbox" checked> Publicar inmediatamente</label>
+          <button class="btn red" id="guardar-comunicado" type="submit">Publicar comunicado</button>
+          <button class="btn" id="cancelar-edicion-comunicado" type="button" hidden>Cancelar edición</button>
+        </form>
+        <p id="estado-comunicados" role="status" aria-live="polite"></p>
+        <h3>Comunicados registrados</h3>
+        <div id="lista-comunicados-admin"></div>
+      </div>
+
+      <h3>Solicitudes de acceso pendientes</h3><div id="solicitudes-admin">
+  <p>Las solicitudes aparecerán aquí cuando carguemos el panel.</p>
+</div><p id="estado-solicitudes" role="status" aria-live="polite"></p><button class="btn red" type="button" id="actualizar-solicitudes">
+  Actualizar solicitudes
+</button>
+
+      <label for="archivo-material">Selecciona el archivo que deseas subir:</label>
+      <input type="file" id="archivo-material">
+
+      <button class="btn red" type="button" id="subir-material">
+        Subir material
+      </button>
+
+      <p id="estado-material" role="status" aria-live="polite"></p>
+
+      <h3>Materiales publicados</h3>
+      <ul id="lista-materiales"></ul>
+    </div>
+  </div>
+</section>
+
+<!-- VENTANA DE INICIO DE SESIÓN -->
+<div class="modal" id="modal">
+  <div class="box">
+    <button class="close" type="button" data-close aria-label="Cerrar">×</button>
+
+    <h2>Acceso docente</h2>
+    <p>Ingresa con tu cuenta autorizada de la institución.</p>
+
+    <form id="login-form">
+      <label for="email">Correo electrónico</label>
+      <input
+        id="email"
+        type="email"
+        autocomplete="username"
+        required
+        style="display:block;width:100%;padding:12px;margin:6px 0 14px;border:1px solid #ccc;border-radius:8px"
+      >
+
+      <label for="password">Contraseña</label>
+      <input
+        id="password"
+        type="password"
+        autocomplete="current-password"
+        required
+        style="display:block;width:100%;padding:12px;margin:6px 0 14px;border:1px solid #ccc;border-radius:8px"
+      >
+
+      <button class="btn red" type="submit" id="login-button">
+        Iniciar sesión
+      </button>
+
+      <button class="btn" type="button" id="logout" hidden>
+        Cerrar sesión
+      </button>
+      <button class="btn" type="button" id="recuperar-password">
+  ¿Olvidaste tu contraseña?
+</button>
+
+      <p id="login-message" role="status" aria-live="polite"></p>
+      
+    </form>
+<div id="solicitud-acceso" style="margin-top:24px;padding:18px;border:1px solid #ddd;border-radius:12px">
+  <h3>Solicitar acceso a la plataforma</h3>
+  <p>Si eres docente o padre de familia, puedes solicitar una cuenta. El administrador revisará tu solicitud.</p>
+
+  <form id="solicitud-form">
+    <label for="solicitud-nombre">Nombre completo</label>
+    <input
+      id="solicitud-nombre"
+      type="text"
+      required
+      maxlength="150"
+      style="display:block;width:100%;padding:12px;margin:6px 0 14px;border:1px solid #ccc;border-radius:8px"
+    >
+
+    <label for="solicitud-correo">Correo electrónico</label>
+    <input
+      id="solicitud-correo"
+      type="email"
+      required
+      maxlength="254"
+      style="display:block;width:100%;padding:12px;margin:6px 0 14px;border:1px solid #ccc;border-radius:8px"
+    >
+
+    <label for="solicitud-tipo">¿Qué tipo de usuario eres?</label>
+    <select
+      id="solicitud-tipo"
+      required
+      style="display:block;width:100%;padding:12px;margin:6px 0 14px;border:1px solid #ccc;border-radius:8px"
+    >
+      <option value="">Selecciona una opción</option>
+      <option value="docente">Docente</option>
+      <option value="padre_familia">Padre de familia</option>
+    </select>
+
+    <button class="btn red" type="submit" id="solicitud-boton">
+      Enviar solicitud
+    </button>
+
+    <p id="solicitud-mensaje" role="status" aria-live="polite"></p>
+  </form>
+</div>
+    
+  </div>
+</div>
+
+<!-- CONEXIÓN CON SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+(() => {
+  const SUPABASE_URL = 'https://dyvygdcdwosqrwlcjqoo.supabase.co';
+  const SUPABASE_PUBLIC_KEY = 'sb_publishable_y2gEIKI-sFTubBTCA1xHlg_SdLxXwdC';
+
+  const modal = document.getElementById('modal');
+  const form = document.getElementById('login-form');
+  const message = document.getElementById('login-message');
+  const loginButton = document.getElementById('login-button');
+  const logoutButton = document.getElementById('logout');
+  const emailInput = document.getElementById('email');
+  const passwordInput = document.getElementById('password');
+
+  const panel = document.getElementById('panel-materiales');
+  const archivo = document.getElementById('archivo-material');
+  const botonSubir = document.getElementById('subir-material');
+  const estado = document.getElementById('estado-material');
+  const lista = document.getElementById('lista-materiales');
+  const gestionComunicados = document.getElementById('gestion-comunicados');
+  const gestionGaleria = document.getElementById('gestion-galeria');
+  const galeriaPublica = document.getElementById('galeria-publica');
+  const formGaleria = document.getElementById('form-galeria');
+  const estadoGaleria = document.getElementById('estado-galeria');
+  const listaGaleriaAdmin = document.getElementById('lista-galeria-admin');
+  const botonGuardarGaleria = document.getElementById('guardar-galeria');
+  const botonCancelarEdicionGaleria = document.getElementById('cancelar-edicion-galeria');
+  const listaComunicadosPublicos = document.getElementById('lista-comunicados-publicos');
+  const listaComunicadosAdmin = document.getElementById('lista-comunicados-admin');
+  const formComunicado = document.getElementById('form-comunicado');
+  const estadoComunicados = document.getElementById('estado-comunicados');
+  const botonGuardarComunicado = document.getElementById('guardar-comunicado');
+  const botonCancelarEdicionComunicado = document.getElementById('cancelar-edicion-comunicado');
+
+  const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLIC_KEY
+  );
+
+  window.supabaseClient = supabaseClient;
+
+  let usuarioActual = null;
+  let perfilActual = null;
+  let cargandoPanel = false;
+  let sesionPanelPendiente = false;
+
+  // Mostrar comunicados publicados en la página pública.
+  async function cargarComunicadosPublicos() {
+    if (!listaComunicadosPublicos) return;
+    const { data, error } = await supabaseClient
+      .from('comunicados')
+      .select('id, titulo, contenido, categoria, creado_en')
+      .eq('publicado', true)
+      .order('creado_en', { ascending: false });
+
+    listaComunicadosPublicos.replaceChildren();
+    if (error) {
+      const aviso = document.createElement('article');
+      aviso.className = 'notice';
+      aviso.textContent = 'No se pudieron cargar los comunicados en este momento.';
+      listaComunicadosPublicos.appendChild(aviso);
+      console.error('Error al cargar comunicados públicos:', error);
+      return;
+    }
+    if (!data || data.length === 0) {
+      const aviso = document.createElement('article');
+      aviso.className = 'notice';
+      const titulo = document.createElement('h3');
+      titulo.textContent = 'Próximamente';
+      const texto = document.createElement('p');
+      texto.textContent = 'Aquí se publicarán los comunicados oficiales de la institución.';
+      aviso.append(titulo, texto);
+      listaComunicadosPublicos.appendChild(aviso);
+      return;
+    }
+    data.forEach(item => {
+      const tarjeta = document.createElement('article');
+      tarjeta.className = 'notice';
+      const categoria = document.createElement('small');
+      categoria.textContent = item.categoria || 'Comunicado institucional';
+      const titulo = document.createElement('h3');
+      titulo.textContent = item.titulo;
+      const texto = document.createElement('p');
+      texto.style.whiteSpace = 'pre-wrap';
+      texto.textContent = item.contenido;
+      tarjeta.append(categoria, titulo, texto);
+      if (item.creado_en) {
+        const fecha = document.createElement('p');
+        fecha.className = 'estado-comunicado';
+        fecha.textContent = new Date(item.creado_en).toLocaleDateString('es-PE', { year: 'numeric', month: 'long', day: 'numeric' });
+        tarjeta.appendChild(fecha);
+      }
+      listaComunicadosPublicos.appendChild(tarjeta);
+    });
+  }
+
+  function urlVideoEmbed(url) {
+    try {
+      const u = new URL(url);
+      let id = '';
+      if (u.hostname.includes('youtu.be')) id = u.pathname.split('/').filter(Boolean)[0] || '';
+      else if (u.hostname.includes('youtube.com')) {
+        if (u.pathname === '/watch') id = u.searchParams.get('v') || '';
+        else if (u.pathname.startsWith('/embed/')) id = u.pathname.split('/')[2] || '';
+        else if (u.pathname.startsWith('/shorts/')) id = u.pathname.split('/')[2] || '';
+      }
+      return /^[A-Za-z0-9_-]{11}$/.test(id) ? 'https://www.youtube-nocookie.com/embed/' + id : null;
+    } catch (_) { return null; }
+  }
+
+  async function cargarGaleriaPublica() {
+    if (!galeriaPublica) return;
+    const { data, error } = await supabaseClient.from('galeria_multimedia')
+      .select('id,titulo,descripcion,tipo,url,publicado,creado_en')
+      .eq('publicado', true).order('creado_en', { ascending: false });
+    galeriaPublica.replaceChildren();
+    if (error) {
+      const aviso = document.createElement('article'); aviso.className = 'notice';
+      aviso.textContent = 'No se pudo cargar la galería en este momento.';
+      galeriaPublica.appendChild(aviso); console.error('Error al cargar galería:', error); return;
+    }
+    if (!data || data.length === 0) {
+      const aviso = document.createElement('article'); aviso.className = 'notice';
+      const h = document.createElement('h3'); h.textContent = 'Próximamente';
+      const p = document.createElement('p'); p.textContent = 'Aquí compartiremos fotografías y videos de nuestras actividades escolares.';
+      aviso.append(h,p); galeriaPublica.appendChild(aviso); return;
+    }
+    data.forEach(item => {
+      const card = document.createElement('article'); card.className = 'gallery-card';
+      if (item.tipo === 'video') {
+        const embed = urlVideoEmbed(item.url);
+        if (embed) {
+          const frame = document.createElement('iframe'); frame.src = embed;
+          frame.title = item.titulo || 'Video institucional'; frame.loading = 'lazy';
+          frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+          frame.allowFullscreen = true; card.appendChild(frame);
+        } else {
+          const video = document.createElement('video'); video.src = item.url; video.controls = true; video.preload = 'metadata'; card.appendChild(video);
+        }
+      } else {
+        const img = document.createElement('img'); img.src = item.url; img.alt = item.titulo || 'Fotografía escolar'; img.loading = 'lazy'; card.appendChild(img);
+      }
+      const body = document.createElement('div'); body.className = 'gallery-card-body';
+      const h = document.createElement('h3'); h.textContent = item.titulo;
+      body.appendChild(h);
+      if (item.descripcion) { const p = document.createElement('p'); p.textContent = item.descripcion; body.appendChild(p); }
+      card.appendChild(body); galeriaPublica.appendChild(card);
+    });
+  }
+
+  function limpiarFormularioGaleria() {
+    formGaleria.reset();
+    document.getElementById('galeria-id').value = '';
+    document.getElementById('galeria-publicado').checked = true;
+    botonGuardarGaleria.textContent = 'Guardar contenido';
+    botonCancelarEdicionGaleria.hidden = true;
+  }
+
+  async function cargarGaleriaAdmin() {
+    if (perfilActual !== 'administrador' || !listaGaleriaAdmin) return;
+    estadoGaleria.textContent = 'Cargando galería...';
+    const { data, error } = await supabaseClient.from('galeria_multimedia')
+      .select('id,titulo,descripcion,tipo,url,storage_path,publicado,creado_en')
+      .order('creado_en', { ascending: false });
+    listaGaleriaAdmin.replaceChildren();
+    if (error) { estadoGaleria.textContent = 'No se pudo cargar la galería: ' + error.message; return; }
+    if (!data || !data.length) { listaGaleriaAdmin.textContent = 'Todavía no hay contenido registrado.'; estadoGaleria.textContent = ''; return; }
+    data.forEach(item => {
+      const box = document.createElement('div'); box.className = 'gallery-admin-item';
+      const h = document.createElement('h4'); h.textContent = item.titulo;
+      const p = document.createElement('p'); p.textContent = `${item.tipo === 'video' ? 'Video' : 'Fotografía'} · ${item.publicado ? 'Publicado' : 'Borrador'}`;
+      const edit = document.createElement('button'); edit.type = 'button'; edit.className = 'btn'; edit.textContent = 'Editar';
+      edit.addEventListener('click', () => {
+        document.getElementById('galeria-id').value = item.id;
+        document.getElementById('galeria-titulo').value = item.titulo || '';
+        document.getElementById('galeria-descripcion').value = item.descripcion || '';
+        document.getElementById('galeria-tipo').value = item.tipo || 'imagen';
+        document.getElementById('galeria-youtube').value = item.tipo === 'video' && urlVideoEmbed(item.url) ? item.url : '';
+        document.getElementById('galeria-publicado').checked = !!item.publicado;
+        document.getElementById('galeria-archivo').value = '';
+        botonGuardarGaleria.textContent = 'Guardar cambios'; botonCancelarEdicionGaleria.hidden = false;
+        formGaleria.scrollIntoView({behavior:'smooth', block:'start'});
+      });
+      const del = document.createElement('button'); del.type = 'button'; del.className = 'btn red'; del.textContent = 'Eliminar';
+      del.addEventListener('click', async () => {
+        if (!confirm('¿Eliminar este contenido de la galería?')) return;
+        estadoGaleria.textContent = 'Eliminando...';
+        if (item.storage_path) {
+          const { error: storageError } = await supabaseClient.storage.from('galeria-ie7224').remove([item.storage_path]);
+          if (storageError) { estadoGaleria.textContent = 'No se pudo eliminar el archivo: ' + storageError.message; return; }
+        }
+        const { error: deleteError } = await supabaseClient.from('galeria_multimedia').delete().eq('id', item.id);
+        if (deleteError) { estadoGaleria.textContent = 'No se pudo eliminar: ' + deleteError.message; return; }
+        estadoGaleria.textContent = 'Contenido eliminado.'; await cargarGaleriaAdmin(); await cargarGaleriaPublica();
+      });
+      box.append(h,p,edit,document.createTextNode(' '),del); listaGaleriaAdmin.appendChild(box);
+    });
+    estadoGaleria.textContent = '';
+  }
+
+  if (formGaleria) {
+    formGaleria.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (perfilActual !== 'administrador') { estadoGaleria.textContent = 'Solo administración puede gestionar la galería.'; return; }
+      const id = document.getElementById('galeria-id').value;
+      const titulo = document.getElementById('galeria-titulo').value.trim();
+      const descripcion = document.getElementById('galeria-descripcion').value.trim();
+      const tipo = document.getElementById('galeria-tipo').value;
+      const file = document.getElementById('galeria-archivo').files[0];
+      const youtube = document.getElementById('galeria-youtube').value.trim();
+      const publicado = document.getElementById('galeria-publicado').checked;
+      let url = null, storage_path = null;
+      botonGuardarGaleria.disabled = true; estadoGaleria.textContent = 'Guardando contenido...';
+      try {
+        if (file) {
+          const validImage = ['image/jpeg','image/png','image/webp','image/gif'].includes(file.type);
+          const validVideo = ['video/mp4','video/webm','video/quicktime'].includes(file.type);
+          if ((tipo === 'imagen' && !validImage) || (tipo === 'video' && !validVideo)) throw new Error('El archivo no coincide con el tipo seleccionado. Fotos: JPG, PNG, WEBP o GIF. Videos: MP4, WEBM o MOV.');
+          if (file.size > 50 * 1024 * 1024) throw new Error('El archivo supera el límite de 50 MB. Para videos pesados, usa un enlace de YouTube.');
+          const ext = (file.name.split('.').pop() || 'bin').replace(/[^a-zA-Z0-9]/g,'').toLowerCase();
+          storage_path = `${Date.now()}-${Math.random().toString(36).slice(2,10)}.${ext}`;
+          const { error: uploadError } = await supabaseClient.storage.from('galeria-ie7224').upload(storage_path, file, { upsert: false, contentType: file.type });
+          if (uploadError) throw uploadError;
+          const { data: publicData } = supabaseClient.storage.from('galeria-ie7224').getPublicUrl(storage_path);
+          url = publicData.publicUrl;
+        } else if (tipo === 'video' && youtube) {
+          if (!urlVideoEmbed(youtube)) throw new Error('Pega un enlace válido de YouTube.');
+          url = youtube;
+        } else if (id) {
+          const { data: current, error: currentError } = await supabaseClient.from('galeria_multimedia').select('url,storage_path,tipo').eq('id', id).single();
+          if (currentError) throw currentError;
+          url = current.url; storage_path = current.storage_path;
+          if (tipo !== current.tipo && !file && !youtube) throw new Error('Selecciona un archivo o enlace para cambiar el tipo de contenido.');
+        } else {
+          throw new Error(tipo === 'video' ? 'Selecciona un video o pega un enlace de YouTube.' : 'Selecciona una fotografía.');
+        }
+        const payload = { titulo, descripcion: descripcion || null, tipo, url, storage_path, publicado };
+        const result = id
+          ? await supabaseClient.from('galeria_multimedia').update(payload).eq('id', id)
+          : await supabaseClient.from('galeria_multimedia').insert([payload]);
+        if (result.error) {
+          if (storage_path && file) await supabaseClient.storage.from('galeria-ie7224').remove([storage_path]);
+          throw result.error;
+        }
+        limpiarFormularioGaleria(); estadoGaleria.textContent = 'Contenido guardado correctamente.';
+        await cargarGaleriaAdmin(); await cargarGaleriaPublica();
+      } catch (error) { console.error(error); estadoGaleria.textContent = 'Error: ' + (error.message || 'No se pudo guardar el contenido.'); }
+      finally { botonGuardarGaleria.disabled = false; }
+    });
+    botonCancelarEdicionGaleria.addEventListener('click', limpiarFormularioGaleria);
+  }
+
+  function limpiarFormularioComunicado() {
+    formComunicado.reset();
+    document.getElementById('comunicado-id').value = '';
+    document.getElementById('comunicado-publicado').checked = true;
+    botonGuardarComunicado.textContent = 'Publicar comunicado';
+    botonCancelarEdicionComunicado.hidden = true;
+  }
+
+  // Listado de gestión, visible únicamente para administradores.
+  async function cargarComunicadosAdmin() {
+    if (perfilActual !== 'administrador' || !listaComunicadosAdmin) return;
+    estadoComunicados.textContent = 'Cargando comunicados...';
+    const { data, error } = await supabaseClient
+      .from('comunicados')
+      .select('id, titulo, contenido, categoria, publicado, creado_en')
+      .order('creado_en', { ascending: false });
+    listaComunicadosAdmin.replaceChildren();
+    if (error) {
+      estadoComunicados.textContent = 'No se pudieron cargar: ' + error.message;
+      return;
+    }
+    if (!data || data.length === 0) {
+      listaComunicadosAdmin.textContent = 'Todavía no hay comunicados registrados.';
+      estadoComunicados.textContent = '';
+      return;
+    }
+    data.forEach(item => {
+      const tarjeta = document.createElement('article');
+      tarjeta.className = 'comunicado-admin';
+      const titulo = document.createElement('h4');
+      titulo.textContent = item.titulo;
+      const estadoItem = document.createElement('p');
+      estadoItem.textContent = (item.publicado ? 'Publicado' : 'Borrador') + ' · ' + (item.categoria || 'Comunicado institucional');
+      const resumen = document.createElement('p');
+      resumen.textContent = item.contenido;
+      const editar = document.createElement('button');
+      editar.type = 'button'; editar.className = 'btn'; editar.textContent = 'Editar';
+      editar.addEventListener('click', () => {
+        document.getElementById('comunicado-id').value = item.id;
+        document.getElementById('comunicado-titulo').value = item.titulo || '';
+        document.getElementById('comunicado-categoria').value = item.categoria || 'Comunicado institucional';
+        document.getElementById('comunicado-contenido').value = item.contenido || '';
+        document.getElementById('comunicado-publicado').checked = !!item.publicado;
+        botonGuardarComunicado.textContent = 'Guardar cambios';
+        botonCancelarEdicionComunicado.hidden = false;
+        formComunicado.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      const eliminar = document.createElement('button');
+      eliminar.type = 'button'; eliminar.className = 'btn red'; eliminar.textContent = 'Eliminar';
+      eliminar.addEventListener('click', async () => {
+        if (!confirm('¿Eliminar el comunicado «' + item.titulo + '»? Esta acción no se puede deshacer.')) return;
+        eliminar.disabled = true;
+        estadoComunicados.textContent = 'Eliminando comunicado...';
+        const { error: errorEliminar } = await supabaseClient.from('comunicados').delete().eq('id', item.id);
+        if (errorEliminar) {
+          estadoComunicados.textContent = 'No se pudo eliminar: ' + errorEliminar.message;
+          eliminar.disabled = false;
+          return;
+        }
+        estadoComunicados.textContent = 'Comunicado eliminado.';
+        await cargarComunicadosAdmin();
+        await cargarComunicadosPublicos();
+      });
+      tarjeta.append(titulo, estadoItem, resumen, editar, eliminar);
+      listaComunicadosAdmin.appendChild(tarjeta);
+    });
+    estadoComunicados.textContent = '';
+  }
+
+  formComunicado.addEventListener('submit', async event => {
+    event.preventDefault();
+    if (perfilActual !== 'administrador') {
+      estadoComunicados.textContent = 'Solo el administrador puede gestionar comunicados.';
+      return;
+    }
+    const id = document.getElementById('comunicado-id').value;
+    const datos = {
+      titulo: document.getElementById('comunicado-titulo').value.trim(),
+      categoria: document.getElementById('comunicado-categoria').value,
+      contenido: document.getElementById('comunicado-contenido').value.trim(),
+      publicado: document.getElementById('comunicado-publicado').checked
+    };
+    if (!datos.titulo || !datos.contenido) {
+      estadoComunicados.textContent = 'Completa el título y el contenido.';
+      return;
+    }
+    botonGuardarComunicado.disabled = true;
+    estadoComunicados.textContent = id ? 'Guardando cambios...' : 'Guardando comunicado...';
+    try {
+      const resultado = id
+        ? await supabaseClient.from('comunicados').update(datos).eq('id', id)
+        : await supabaseClient.from('comunicados').insert([datos]);
+      if (resultado.error) throw resultado.error;
+      estadoComunicados.textContent = datos.publicado ? 'Comunicado guardado y publicado.' : 'Borrador guardado; todavía no aparece en la página pública.';
+      limpiarFormularioComunicado();
+      await cargarComunicadosAdmin();
+      await cargarComunicadosPublicos();
+    } catch (error) {
+      estadoComunicados.textContent = 'No se pudo guardar: ' + (error.message || 'Error desconocido');
+    } finally {
+      botonGuardarComunicado.disabled = false;
+    }
+  });
+
+  botonCancelarEdicionComunicado.addEventListener('click', limpiarFormularioComunicado);
+
+  // Abrir la ventana de acceso.
+  document.querySelectorAll('[data-open]').forEach(button => {
+    button.addEventListener('click', () => {
+      modal.classList.add('show');
+      message.textContent = '';
+    });
+  });
+
+  // Cerrar la ventana de acceso.
+  document.querySelectorAll('[data-close]').forEach(button => {
+    button.addEventListener('click', () => {
+      modal.classList.remove('show');
+    });
+  });
+
+  modal.addEventListener('click', event => {
+    if (event.target === modal) {
+      modal.classList.remove('show');
+    }
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      modal.classList.remove('show');
+    }
+  });
+
+  // Comprobar el perfil del usuario y mostrar el panel autorizado.
+  async function actualizarPanel(session) {
+    if (cargandoPanel) {
+      sesionPanelPendiente = true;
+      return;
+    }
+
+    cargandoPanel = true;
+
+    try {
+      if (!session) {
+        usuarioActual = null;
+        perfilActual = null;
+        panel.hidden = true;
+        gestionComunicados.hidden = true;
+        gestionGaleria.hidden = true;
+        lista.replaceChildren();
+        estado.textContent = '';
+        return;
+      }
+
+      if (usuarioActual === session.user.id && !panel.hidden) {
+        return;
+      }
+
+      usuarioActual = session.user.id;
+      perfilActual = null;
+      panel.hidden = true;
+      estado.textContent = 'Verificando permisos...';
+
+      const { data: perfil, error } = await supabaseClient
+        .from('perfiles')
+        .select('tipo_usuario')
+        .eq('id', session.user.id)
+        .maybeSingle();
+
+      if (error) {
+        estado.textContent =
+          'Error al consultar el perfil: ' + error.message;
+        console.error(error);
+        return;
+      }
+
+      if (!perfil) {
+        estado.textContent =
+          'No se encontró el perfil de esta cuenta.';
+        return;
+      }
+
+      const rolesPermitidos = [
+        'administrador',
+        'direccion',
+        'docente'
+      ];
+
+      if (!rolesPermitidos.includes(perfil.tipo_usuario)) {
+        estado.textContent =
+          'Tu cuenta no tiene permisos para ver los materiales.';
+        return;
+      }
+
+      perfilActual = perfil.tipo_usuario;
+      panel.hidden = false;
+      gestionComunicados.hidden = perfilActual !== 'administrador';
+      gestionGaleria.hidden = perfilActual !== 'administrador';
+
+      await cargarMateriales();
+      if (perfilActual === 'administrador') {
+        await cargarComunicadosAdmin();
+        await cargarGaleriaAdmin();
+        await cargarSolicitudes();
+      }
+
+    } catch (error) {
+      estado.textContent =
+        'Error inesperado: ' + error.message;
+      console.error(error);
+
+    } finally {
+      cargandoPanel = false;
+
+      if (sesionPanelPendiente) {
+        sesionPanelPendiente = false;
+
+        const { data } = await supabaseClient.auth.getSession();
+        await actualizarPanel(data.session);
+      }
+    }
+  }
+
+  // Cargar la lista de archivos del repositorio privado.
+  async function cargarMateriales() {
+    lista.replaceChildren();
+
+    const { data, error } = await supabaseClient.storage
+      .from('materiales-ie7224')
+      .list('', { limit: 100 });
+
+    if (error) {
+      estado.textContent =
+        'Error al cargar materiales: ' + error.message;
+      return;
+    }
+
+    const materiales = (data || []).filter(item => item.name);
+
+    for (const item of materiales) {
+      const li = document.createElement('li');
+      const nombre = document.createElement('span');
+
+      nombre.textContent = item.name + ' ';
+      li.appendChild(nombre);
+
+      // Abrir un archivo privado mediante un enlace temporal.
+      const botonVer = document.createElement('button');
+      botonVer.type = 'button';
+      botonVer.textContent = 'Abrir';
+
+      botonVer.addEventListener('click', async () => {
+        const { data: enlace, error: errorEnlace } =
+          await supabaseClient.storage
+            .from('materiales-ie7224')
+            .createSignedUrl(item.name, 60);
+
+        if (errorEnlace) {
+          estado.textContent =
+            'No se pudo abrir el archivo: ' + errorEnlace.message;
+          return;
+        }
+
+        window.open(enlace.signedUrl, '_blank', 'noopener,noreferrer');
+      });
+
+      li.appendChild(botonVer);
+      // Descargar un archivo privado mediante un enlace temporal.
+const botonDescargar = document.createElement('button');
+botonDescargar.type = 'button';
+botonDescargar.textContent = 'Descargar';
+
+  botonDescargar.addEventListener('click', async () => {
+    estado.textContent = 'Preparando descarga...';
+
+    const { data: enlace, error: errorEnlace } =
+      await supabaseClient.storage
+        .from('materiales-ie7224')
+        .createSignedUrl(item.name, 60, {
+          download: true
+        });
+
+    if (errorEnlace) {
+      estado.textContent =
+        'No se pudo descargar el archivo: ' + errorEnlace.message;
+      return;
+    }
+
+    const enlaceDescarga = document.createElement('a');
+    enlaceDescarga.href = enlace.signedUrl;
+    enlaceDescarga.download = item.name;
+    document.body.appendChild(enlaceDescarga);
+    enlaceDescarga.click();
+    enlaceDescarga.remove();
+
+    estado.textContent = 'Se solicitó la descarga de: ' + item.name;
+  });
+
+  li.appendChild(botonDescargar);
+
+      // Solo el administrador verá el botón para eliminar.
+      if (perfilActual === 'administrador') {
+        const botonEliminar = document.createElement('button');
+        botonEliminar.type = 'button';
+        botonEliminar.textContent = 'Eliminar';
+
+        botonEliminar.addEventListener('click', async () => {
+          if (!confirm('¿Seguro que deseas eliminar este archivo?')) {
+            return;
+          }
+
+          const { error: errorEliminar } =
+            await supabaseClient.storage
+              .from('materiales-ie7224')
+              .remove([item.name]);
+
+          if (errorEliminar) {
+            estado.textContent =
+              'Error al eliminar: ' + errorEliminar.message;
+            return;
+          }
+
+          estado.textContent = 'Archivo eliminado correctamente.';
+          await cargarMateriales();
+        });
+
+        li.appendChild(botonEliminar);
+      }
+
+      lista.appendChild(li);
+    }
+
+    if (materiales.length === 0) {
+      estado.textContent = 'Todavía no hay materiales publicados.';
+    } else {
+      estado.textContent = 'Materiales cargados correctamente.';
+    }
+  }
+
+  // Iniciar sesión.
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
+
+    message.textContent = 'Verificando acceso...';
+    loginButton.disabled = true;
+
+    try {
+      const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+          email: emailInput.value.trim(),
+          password: passwordInput.value
+        });
+
+      if (error) {
+        throw error;
+      }
+
+      const { data: perfil, error: errorPerfil } =
+        await supabaseClient
+          .from('perfiles')
+          .select('tipo_usuario')
+          .eq('id', data.user.id)
+          .maybeSingle();
+
+      if (errorPerfil) {
+        await supabaseClient.auth.signOut();
+        throw new Error(
+          'No se pudieron verificar tus permisos. Inténtalo nuevamente.'
+        );
+      }
+
+      const rolesPermitidos = [
+        'administrador',
+        'direccion',
+        'docente'
+      ];
+
+      if (!perfil || !rolesPermitidos.includes(perfil.tipo_usuario)) {
+        await supabaseClient.auth.signOut();
+
+        throw new Error(
+          'Tu cuenta no tiene permisos para ingresar al área docente.'
+        );
+      }
+
+      message.textContent = 'Acceso autorizado. ¡Bienvenido!';
+      passwordInput.value = '';
+
+      loginButton.hidden = true;
+      logoutButton.hidden = false;
+      emailInput.disabled = true;
+      passwordInput.disabled = true;
+
+      modal.classList.remove('show');
+
+      await actualizarPanel(data.session);
+
+      if (!panel.hidden) {
+        panel.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+
+    } catch (error) {
+      message.textContent =
+        error.message || 'No se pudo iniciar sesión.';
+
+    } finally {
+      loginButton.disabled = false;
+    }
+  });
+
+  // Cerrar sesión.
+  logoutButton.addEventListener('click', async () => {
+    logoutButton.disabled = true;
+
+    try {
+      const { error } = await supabaseClient.auth.signOut();
+
+      if (error) {
+        throw error;
+      }
+
+      loginButton.hidden = false;
+      logoutButton.hidden = true;
+      emailInput.disabled = false;
+      passwordInput.disabled = false;
+      passwordInput.value = '';
+
+      message.textContent = 'Sesión cerrada correctamente.';
+      modal.classList.remove('show');
+
+      await actualizarPanel(null);
+
+    } catch (error) {
+      message.textContent =
+        'No se pudo cerrar la sesión: ' + error.message;
+
+    } finally {
+      logoutButton.disabled = false;
+    }
+  });
+
+  // Recuperación de contraseña e invitaciones de nuevos usuarios.
+supabaseClient.auth.onAuthStateChange(async (event, session) => {
+setTimeout(() => {
+actualizarPanel(session);
+}, 0);
+
+if (
+  session &&
+  (event === 'PASSWORD_RECOVERY' || event === 'SIGNED_IN')
+) {
+  const url = new URL(window.location.href);
+  const tipo = url.searchParams.get('type');
+  const esInvitacion = tipo === 'invite';
+
+  if (event === 'PASSWORD_RECOVERY' || esInvitacion) {
+    const nueva = prompt(
+      'Crea tu contraseña (mínimo 8 caracteres):'
+    );
+
+    if (nueva === null) {
+      return;
+    }
+
+    if (nueva.length < 8) {
+      alert('La contraseña debe tener al menos 8 caracteres.');
+      return;
+    }
+
+    const { error } = await supabaseClient.auth.updateUser({
+      password: nueva
+    });
+
+    if (error) {
+      alert('No se pudo establecer la contraseña: ' + error.message);
+    } else {
+      alert('¡Contraseña creada correctamente! Ya puedes ingresar.');
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }
+}
+
+});
+  // Cargar los comunicados públicos sin requerir inicio de sesión.
+  cargarComunicadosPublicos();
+  cargarGaleriaPublica();
+
+  // Comprobar si ya existe una sesión activa al abrir la página.
+  supabaseClient.auth.getSession().then(({ data, error }) => {
+    if (error) {
+      estado.textContent =
+        'Error al comprobar la sesión: ' + error.message;
+      return;
+    }
+
+    actualizarPanel(data.session);
+  });
+
+  // Subir un archivo al repositorio privado.
+  botonSubir.addEventListener('click', async () => {
+   if (!['administrador', 'docente'].includes(perfilActual)) {
+  estado.textContent = 'Solo administrador y docentes pueden subir materiales.';
+  return;
+}
+
+    const file = archivo.files[0];
+
+    if (!file) {
+      estado.textContent = 'Selecciona un archivo primero.';
+      return;
+    }
+
+    estado.textContent = 'Subiendo archivo...';
+    botonSubir.disabled = true;
+
+    try {
+      const nombreSeguro = file.name.replace(/[^a-zA-Z0-9.-]/g, '');
+      const nombre = Date.now() + '-' + nombreSeguro;
+
+      const { error } = await supabaseClient.storage
+        .from('materiales-ie7224')
+        .upload(nombre, file);
+
+      if (error) {
+        estado.textContent =
+          'Error al subir: ' + error.message;
+        return;
+      }
+
+      archivo.value = '';
+      estado.textContent = '¡Archivo subido correctamente!';
+
+      await cargarMateriales();
+
+    } catch (error) {
+      estado.textContent =
+        'Error inesperado al subir el archivo: ' + error.message;
+
+    } finally {
+      botonSubir.disabled = false;
+    }
+  });
+// Enviar solicitud de acceso para docentes y padres de familia.
+  // Gestionar solicitudes de acceso desde el panel de administración.
+const contenedorSolicitudes = document.getElementById('solicitudes-admin');
+const estadoSolicitudes = document.getElementById('estado-solicitudes');
+const botonActualizarSolicitudes = document.getElementById('actualizar-solicitudes');
+
+async function cargarSolicitudes() {
+if (perfilActual !== 'administrador') {
+return;
+}
+
+estadoSolicitudes.textContent = 'Cargando solicitudes...';
+
+const { data, error } = await supabaseClient
+.from('solicitudes_acceso')
+.select('id, nombre_completo, correo, tipo_solicitado, estado, creado_en')
+.eq('estado', 'pendiente')
+.order('creado_en', { ascending: true });
+
+if (error) {
+estadoSolicitudes.textContent =
+'No se pudieron cargar las solicitudes: ' + error.message;
+return;
+}
+
+contenedorSolicitudes.replaceChildren();
+
+if (!data || data.length === 0) {
+contenedorSolicitudes.textContent = 'No hay solicitudes pendientes.';
+estadoSolicitudes.textContent = '';
+return;
+}
+
+data.forEach(solicitud => {
+const tarjeta = document.createElement('div');
+tarjeta.style.cssText = 'border:1px solid #ccc;padding:12px;margin:10px 0;border-radius:8px';
+
+const informacion = document.createElement('p');
+informacion.textContent =
+  `${solicitud.nombre_completo} — ${solicitud.correo} — ${solicitud.tipo_solicitado}`;
+
+const botonAprobar = document.createElement('button');
+botonAprobar.type = 'button';
+botonAprobar.textContent = 'Aprobar y enviar invitación';
+botonAprobar.className = 'btn red';
+
+botonAprobar.addEventListener('click', async () => {
+  if (!confirm(`¿Aprobar la solicitud de ${solicitud.nombre_completo} y enviar una invitación a ${solicitud.correo}?`)) {
+    return;
+  }
+
+  botonAprobar.disabled = true;
+  estadoSolicitudes.textContent = 'Procesando solicitud...';
+
+  try {
+    const { data: resultado, error: errorFuncion } =
+      await supabaseClient.functions.invoke('gestionar-solicitudes', {
+        body: { solicitud_id: solicitud.id }
+      });
+
+    if (errorFuncion) {
+      throw errorFuncion;
+    }
+
+    if (resultado?.error) {
+      throw new Error(resultado.error);
+    }
+
+    estadoSolicitudes.textContent =
+      resultado?.mensaje || 'Solicitud gestionada correctamente.';
+
+    await cargarSolicitudes();
+
+  } catch (error) {
+    estadoSolicitudes.textContent =
+      'No se pudo completar la operación: ' + error.message;
+    botonAprobar.disabled = false;
+  }
+});
+
+tarjeta.append(informacion, botonAprobar);
+contenedorSolicitudes.appendChild(tarjeta);
+
+});
+
+estadoSolicitudes.textContent = '';
+}
+
+if (botonActualizarSolicitudes) {
+botonActualizarSolicitudes.addEventListener('click', cargarSolicitudes);
+}
+  const solicitudForm = document.getElementById('solicitud-form');
+  // Recuperar contraseña
+const recuperarBtn = document.getElementById('recuperar-password');
+
+recuperarBtn.addEventListener('click', async () => {
+  const correo = document.getElementById('email').value.trim();
+  const mensaje = document.getElementById('login-message');
+
+  if (!correo) {
+    mensaje.textContent = 'Escribe tu correo electrónico primero.';
+    return;
+  }
+
+  mensaje.textContent = 'Enviando enlace de recuperación...';
+
+  const { error } = await supabaseClient.auth.resetPasswordForEmail(correo, {
+    redirectTo: window.location.origin + window.location.pathname
+  });
+
+  if (error) {
+    mensaje.textContent = 'Error: ' + error.message;
+  } else {
+    mensaje.textContent = 'Si el correo está registrado, recibirás un enlace para crear una nueva contraseña. Revisa también el spam.';
+  }
+});
+  const solicitudMensaje = document.getElementById('solicitud-mensaje');
+  const solicitudBoton = document.getElementById('solicitud-boton');
+
+  if (solicitudForm) {
+    solicitudForm.addEventListener('submit', async event => {
+      event.preventDefault();
+
+      const nombre = document
+        .getElementById('solicitud-nombre')
+        .value.trim();
+
+      const correo = document
+        .getElementById('solicitud-correo')
+        .value.trim()
+        .toLowerCase();
+
+      const tipo = document
+        .getElementById('solicitud-tipo')
+        .value;
+
+      if (!nombre || !correo || !['docente', 'padre_familia'].includes(tipo)) {
+        solicitudMensaje.textContent =
+          'Completa los datos y selecciona un tipo de usuario válido.';
+        return;
+      }
+
+      solicitudBoton.disabled = true;
+      solicitudMensaje.textContent = 'Enviando solicitud...';
+
+      try {
+        const { error } = await supabaseClient
+          .from('solicitudes_acceso')
+          .insert([{
+            nombre_completo: nombre,
+            correo: correo,
+            tipo_solicitado: tipo
+          }]);
+
+        if (error) {
+          if (error.code === '23505') {
+            throw new Error('Ya existe una solicitud con esos datos.');
+          }
+          throw error;
+        }
+
+        solicitudMensaje.textContent =
+          '¡Solicitud enviada! Quedará pendiente de revisión por el administrador.';
+
+        solicitudForm.reset();
+
+      } catch (error) {
+        console.error('Error al enviar solicitud:', error);
+
+       solicitudMensaje.textContent =
+  'Error: ' + (error.message || 'Error desconocido') +
+  ' | Código: ' + (error.code || 'sin código') +
+  ' | Detalle: ' + (error.details || 'sin detalle');
+      } finally {
+        solicitudBoton.disabled = false;
+      }
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
