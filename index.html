@@ -518,197 +518,6 @@ footer small {
     padding: 17px;
   }
 }
-
-/* ===== MEJORA VISUAL INSTITUCIONAL: solo estilos, sin modificar funciones ===== */
-:root {
-  --rojo: #8e1727;
-  --oro: #e9b949;
-  --tinta: #172033;
-  --gris: #626b7b;
-  --fondo-suave: #f5f6fa;
-}
-body {
-  font-family: Inter, "Segoe UI", Arial, sans-serif;
-  background: var(--fondo-suave);
-  line-height: 1.7;
-  -webkit-font-smoothing: antialiased;
-}
-::selection { background: #e9b94966; color: #30151a; }
-a, button, input, select, textarea { transition: color .2s ease, background .2s ease, box-shadow .2s ease, transform .2s ease; }
-a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
-  outline: 3px solid #e9b949;
-  outline-offset: 3px;
-}
-.top {
-  background: linear-gradient(90deg, #4d0b17, #751525);
-  letter-spacing: .02em;
-}
-header {
-  background: rgba(255,255,255,.97);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid #8e17270d;
-}
-.brand img {
-  filter: drop-shadow(0 3px 5px #17203312);
-}
-.brand strong { letter-spacing: -.025em; }
-nav a {
-  padding: 8px 2px;
-  position: relative;
-}
-nav a::after {
-  content: "";
-  position: absolute;
-  left: 0; right: 0; bottom: 1px;
-  height: 2px;
-  background: var(--oro);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform .2s ease;
-}
-nav a:hover::after { transform: scaleX(1); }
-.btn {
-  box-shadow: 0 5px 14px #17203312;
-  letter-spacing: .01em;
-}
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 9px 20px #17203320;
-}
-.btn.red { background: linear-gradient(135deg, #8e1727, #68101d); }
-.hero {
-  position: relative;
-  overflow: hidden;
-  background:
-    radial-gradient(ellipse at 85% 15%, #e9b9492b, transparent 34%),
-    linear-gradient(125deg, #3f0914 0%, #761525 54%, #9b2336 100%);
-}
-.hero::after {
-  content: "";
-  position: absolute;
-  width: 360px; height: 360px;
-  right: -130px; bottom: -210px;
-  border: 1px solid #ffffff20;
-  border-radius: 50%;
-  box-shadow: 0 0 0 35px #ffffff08, 0 0 0 70px #ffffff06;
-  pointer-events: none;
-}
-.hero-grid { position: relative; z-index: 1; }
-.hero h1 { letter-spacing: -.045em; text-wrap: balance; }
-.hero p { max-width: 650px; }
-.seal {
-  background: linear-gradient(145deg, #ffffff18, #ffffff08);
-  border-color: #ffffff40;
-  box-shadow: 0 20px 55px #23050b35;
-  backdrop-filter: blur(8px);
-}
-.seal img { filter: drop-shadow(0 8px 12px #0002); }
-section { scroll-margin-top: 110px; }
-.intro { max-width: 780px; }
-.intro h2, .panel-box h2 { letter-spacing: -.035em; }
-.card, .notice, .contact {
-  border-color: #e7e9ef;
-  border-radius: 20px;
-  box-shadow: 0 8px 24px #17203308;
-  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
-}
-.card:hover, .notice:hover, .contact:hover {
-  transform: translateY(-4px);
-  border-color: #e9b9498c;
-  box-shadow: 0 16px 34px #17203312;
-}
-.icon { box-shadow: inset 0 0 0 1px #8e172710; }
-.banner {
-  background: linear-gradient(135deg, #fff3d6, #fffaf0);
-  border: 1px solid #f0dfb7;
-}
-.tile {
-  border-radius: 20px;
-  box-shadow: 0 8px 22px #1720330b;
-  transition: transform .22s ease, box-shadow .22s ease;
-}
-.tile:hover { transform: translateY(-4px); box-shadow: 0 15px 30px #17203314; }
-.staff {
-  background:
-    radial-gradient(ellipse at 95% 0%, #8e172744, transparent 42%),
-    linear-gradient(135deg, #111827, #202b42);
-}
-.staffbox {
-  box-shadow: 0 15px 35px #0002;
-  backdrop-filter: blur(8px);
-}
-.panel-box {
-  border-radius: 22px;
-  border-color: #e2e5ec;
-  box-shadow: 0 15px 45px #1720330d;
-}
-.panel-box hr { border: 0; border-top: 1px solid #e6e8ef; margin: 28px 0; }
-.panel-box label, .box label { display: block; font-weight: 650; margin-top: 12px; }
-.panel-box input:not([type="file"]),
-.panel-box select,
-.panel-box textarea,
-.box input,
-.box select,
-.box textarea {
-  width: 100%;
-  max-width: 100%;
-  min-height: 44px;
-  padding: 11px 13px;
-  margin: 6px 0 14px;
-  border: 1px solid #d8dce5;
-  border-radius: 11px;
-  background: #fff;
-  color: var(--tinta);
-  font: inherit;
-}
-.panel-box input:focus, .panel-box select:focus, .panel-box textarea:focus,
-.box input:focus, .box select:focus, .box textarea:focus {
-  border-color: var(--rojo);
-  box-shadow: 0 0 0 4px #8e172712;
-  outline: none;
-}
-#lista-materiales { padding-left: 0; list-style: none; }
-#lista-materiales li {
-  padding: 14px;
-  border: 1px solid #e5e7ed;
-  border-radius: 12px;
-  background: #fbfcfe;
-}
-.modal { backdrop-filter: blur(5px); }
-.box {
-  border: 1px solid #ffffff80;
-  box-shadow: 0 24px 80px #0004;
-}
-#solicitud-acceso { background: #fafbfe; border-color: #e4e7ef !important; }
-footer {
-  background: linear-gradient(120deg, #0d1422, #202b40);
-}
-footer .wrap { align-items: center; }
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
-}
-@media (max-width: 780px) {
-  .nav { gap: 12px; }
-  nav { gap: 10px 14px; }
-  .hero-grid { gap: 25px; }
-}
-@media (max-width: 540px) {
-  .top { font-size: 12px; }
-  .brand img { width: 48px; height: 48px; }
-  .brand strong { font-size: 14px; }
-  .brand small { font-size: 11px; }
-  nav { padding-bottom: 5px; font-size: 13px; }
-  .hero-grid { padding: 44px 0; }
-  .hero h1 { font-size: clamp(35px, 10vw, 46px); }
-  .hero p { font-size: 16px; }
-  .hero .btn { margin-right: 4px; }
-  .seal { padding: 22px; }
-  section { padding: 44px 0; }
-  .card, .notice, .contact { padding: 20px; }
-  .panel-box { border-radius: 16px; }
-  .box { padding: 22px; }
-}
-
 </style>
 </head>
 
@@ -979,7 +788,10 @@ footer .wrap { align-items: center; }
             <option>Otros avisos</option>
           </select>
           <label for="comunicado-contenido">Contenido</label>
-          <textarea id="comunicado-contenido" rows="5" maxlength="10000" required placeholder="Escribe aquí la información que se publicará"></textarea>
+          <textarea id="comunicado-contenido" rows="5" maxlength="10000" placeholder="Descripción breve (opcional si adjuntas un archivo)"></textarea>
+          <label for="comunicado-adjunto">Adjuntar imagen o documento (JPG, PNG, WEBP, PDF o Word; máximo 10 MB)</label>
+          <input id="comunicado-adjunto" type="file" accept="image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+          <p class="estado-comunicado">Puedes publicar solo el archivo con un título, sin escribir un contenido largo.</p>
           <label class="check-line"><input id="comunicado-publicado" type="checkbox" checked> Publicar inmediatamente</label>
           <button class="btn red" id="guardar-comunicado" type="submit">Publicar comunicado</button>
           <button class="btn" id="cancelar-edicion-comunicado" type="button" hidden>Cancelar edición</button>
@@ -1149,7 +961,7 @@ footer .wrap { align-items: center; }
     if (!listaComunicadosPublicos) return;
     const { data, error } = await supabaseClient
       .from('comunicados')
-      .select('id, titulo, contenido, categoria, creado_en')
+      .select('id, titulo, contenido, categoria, creado_en, archivo_url, archivo_nombre, archivo_tipo')
       .eq('publicado', true)
       .order('creado_en', { ascending: false });
 
@@ -1183,7 +995,21 @@ footer .wrap { align-items: center; }
       const texto = document.createElement('p');
       texto.style.whiteSpace = 'pre-wrap';
       texto.textContent = item.contenido;
-      tarjeta.append(categoria, titulo, texto);
+      tarjeta.append(categoria, titulo);
+      if (item.contenido) tarjeta.appendChild(texto);
+      if (item.archivo_url) {
+        if ((item.archivo_tipo || '').startsWith('image/')) {
+          const imagen = document.createElement('img');
+          imagen.src = item.archivo_url; imagen.alt = item.titulo || 'Imagen del comunicado';
+          imagen.loading = 'lazy'; imagen.style.cssText = 'display:block;max-width:100%;height:auto;border-radius:12px;margin:12px 0;';
+          tarjeta.appendChild(imagen);
+        }
+        const enlace = document.createElement('a');
+        enlace.href = item.archivo_url; enlace.target = '_blank'; enlace.rel = 'noopener noreferrer';
+        enlace.textContent = (item.archivo_tipo || '').startsWith('image/') ? 'Ver imagen en tamaño completo' : 'Abrir o descargar: ' + (item.archivo_nombre || 'archivo adjunto');
+        enlace.className = 'btn'; enlace.style.display = 'inline-block'; enlace.style.marginTop = '8px';
+        tarjeta.appendChild(enlace);
+      }
       if (item.creado_en) {
         const fecha = document.createElement('p');
         fecha.className = 'estado-comunicado';
@@ -1364,7 +1190,7 @@ footer .wrap { align-items: center; }
     estadoComunicados.textContent = 'Cargando comunicados...';
     const { data, error } = await supabaseClient
       .from('comunicados')
-      .select('id, titulo, contenido, categoria, publicado, creado_en')
+      .select('id, titulo, contenido, categoria, publicado, creado_en, archivo_url, archivo_nombre, archivo_tipo, archivo_path')
       .order('creado_en', { ascending: false });
     listaComunicadosAdmin.replaceChildren();
     if (error) {
@@ -1384,7 +1210,10 @@ footer .wrap { align-items: center; }
       const estadoItem = document.createElement('p');
       estadoItem.textContent = (item.publicado ? 'Publicado' : 'Borrador') + ' · ' + (item.categoria || 'Comunicado institucional');
       const resumen = document.createElement('p');
-      resumen.textContent = item.contenido;
+      resumen.textContent = item.contenido || '';
+      tarjeta.append(titulo, estadoItem);
+      if (resumen.textContent) tarjeta.appendChild(resumen);
+      if (item.archivo_nombre) { const adjunto = document.createElement('p'); adjunto.textContent = 'Adjunto: ' + item.archivo_nombre; tarjeta.appendChild(adjunto); }
       const editar = document.createElement('button');
       editar.type = 'button'; editar.className = 'btn'; editar.textContent = 'Editar';
       editar.addEventListener('click', () => {
@@ -1392,6 +1221,7 @@ footer .wrap { align-items: center; }
         document.getElementById('comunicado-titulo').value = item.titulo || '';
         document.getElementById('comunicado-categoria').value = item.categoria || 'Comunicado institucional';
         document.getElementById('comunicado-contenido').value = item.contenido || '';
+        document.getElementById('comunicado-adjunto').value = '';
         document.getElementById('comunicado-publicado').checked = !!item.publicado;
         botonGuardarComunicado.textContent = 'Guardar cambios';
         botonCancelarEdicionComunicado.hidden = false;
@@ -1413,7 +1243,7 @@ footer .wrap { align-items: center; }
         await cargarComunicadosAdmin();
         await cargarComunicadosPublicos();
       });
-      tarjeta.append(titulo, estadoItem, resumen, editar, eliminar);
+      tarjeta.append(editar, eliminar);
       listaComunicadosAdmin.appendChild(tarjeta);
     });
     estadoComunicados.textContent = '';
@@ -1426,19 +1256,36 @@ footer .wrap { align-items: center; }
       return;
     }
     const id = document.getElementById('comunicado-id').value;
+    const adjunto = document.getElementById('comunicado-adjunto').files[0];
     const datos = {
       titulo: document.getElementById('comunicado-titulo').value.trim(),
       categoria: document.getElementById('comunicado-categoria').value,
-      contenido: document.getElementById('comunicado-contenido').value.trim(),
+      contenido: document.getElementById('comunicado-contenido').value.trim() || null,
       publicado: document.getElementById('comunicado-publicado').checked
     };
-    if (!datos.titulo || !datos.contenido) {
-      estadoComunicados.textContent = 'Completa el título y el contenido.';
+    if (!datos.titulo || (!datos.contenido && !adjunto && !document.getElementById('comunicado-id').value)) {
+      estadoComunicados.textContent = 'Escribe un título y agrega una descripción o un archivo.';
       return;
+    }
+    if (adjunto) {
+      const tiposPermitidos = ['image/jpeg','image/png','image/webp','application/pdf','application/msword','application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+      if (!tiposPermitidos.includes(adjunto.type)) { estadoComunicados.textContent = 'Tipo de archivo no permitido. Usa JPG, PNG, WEBP, PDF o Word.'; return; }
+      if (adjunto.size > 10 * 1024 * 1024) { estadoComunicados.textContent = 'El archivo supera el límite de 10 MB.'; return; }
     }
     botonGuardarComunicado.disabled = true;
     estadoComunicados.textContent = id ? 'Guardando cambios...' : 'Guardando comunicado...';
     try {
+      if (adjunto) {
+        const ext = (adjunto.name.split('.').pop() || 'bin').replace(/[^a-zA-Z0-9]/g,'').toLowerCase();
+        const ruta = `comunicados/${Date.now()}-${Math.random().toString(36).slice(2,10)}.${ext}`;
+        const { error: errorSubida } = await supabaseClient.storage.from('galeria-ie7224').upload(ruta, adjunto, { upsert: false, contentType: adjunto.type });
+        if (errorSubida) throw errorSubida;
+        const { data: urlPublica } = supabaseClient.storage.from('galeria-ie7224').getPublicUrl(ruta);
+        datos.archivo_url = urlPublica.publicUrl;
+        datos.archivo_nombre = adjunto.name;
+        datos.archivo_tipo = adjunto.type;
+        datos.archivo_path = ruta;
+      }
       const resultado = id
         ? await supabaseClient.from('comunicados').update(datos).eq('id', id)
         : await supabaseClient.from('comunicados').insert([datos]);
