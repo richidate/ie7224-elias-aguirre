@@ -788,7 +788,10 @@ footer small {
             <option>Otros avisos</option>
           </select>
           <label for="comunicado-contenido">Contenido</label>
-          <textarea id="comunicado-contenido" rows="5" maxlength="10000" required placeholder="Escribe aquí la información que se publicará"></textarea>
+          <textarea id="comunicado-contenido" rows="5" maxlength="10000" placeholder="Descripción breve (opcional si adjuntas un archivo)"></textarea>
+          <label for="comunicado-adjunto">Adjuntar imagen o documento (JPG, PNG, WEBP, PDF o Word; máximo 10 MB)</label>
+          <input id="comunicado-adjunto" type="file" accept="image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+          <p class="estado-comunicado">Puedes publicar solo el archivo con un título, sin escribir un contenido largo.</p>
           <label class="check-line"><input id="comunicado-publicado" type="checkbox" checked> Publicar inmediatamente</label>
           <button class="btn red" id="guardar-comunicado" type="submit">Publicar comunicado</button>
           <button class="btn" id="cancelar-edicion-comunicado" type="button" hidden>Cancelar edición</button>
@@ -958,7 +961,7 @@ footer small {
     if (!listaComunicadosPublicos) return;
     const { data, error } = await supabaseClient
       .from('comunicados')
-      .select('id, titulo, contenido, categoria, creado_en')
+      .select('id, titulo, contenido, categoria, creado_en, archivo_url, archivo_nombre, archivo_tipo')
       .eq('publicado', true)
       .order('creado_en', { ascending: false });
 
@@ -992,7 +995,21 @@ footer small {
       const texto = document.createElement('p');
       texto.style.whiteSpace = 'pre-wrap';
       texto.textContent = item.contenido;
-      tarjeta.append(categoria, titulo, texto);
+      tarjeta.append(categoria, titulo);
+      if (item.contenido) tarjeta.appendChild(texto);
+      if (item.archivo_url) {
+        if ((item.archivo_tipo || '').startsWith('image/')) {
+          const imagen = document.createElement('img');
+          imagen.src = item.archivo_url; imagen.alt = item.titulo || 'Imagen del comunicado';
+          imagen.loading = 'lazy'; imagen.style.cssText = 'display:block;max-width:100%;height:auto;border-radius:12px;margin:12px 0;';
+          tarjeta.appendChild(imagen);
+        }
+        const enlace = document.createElement('a');
+        enlace.href = item.archivo_url; enlace.target = '_blank'; enlace.rel = 'noopener noreferrer';
+        enlace.textContent = (item.archivo_tipo || '').startsWith('image/') ? 'Ver imagen en tamaño completo' : 'Abrir o descargar: ' + (item.archivo_nombre || 'archivo adjunto');
+        enlace.className = 'btn'; enlace.style.display = 'inline-block'; enlace.style.marginTop = '8px';
+        tarjeta.appendChild(enlace);
+      }
       if (item.creado_en) {
         const fecha = document.createElement('p');
         fecha.className = 'estado-comunicado';
@@ -1173,7 +1190,7 @@ footer small {
     estadoComunicados.textContent = 'Cargando comunicados...';
     const { data, error } = await supabaseClient
       .from('comunicados')
-      .select('id, titulo, contenido, categoria, publicado, creado_en')
+      .select('id, titulo, contenido, categoria, publicado, creado_en, archivo_url, archivo_nombre, archivo_tipo, archivo_path')
       .order('creado_en', { ascending: false });
     listaComunicadosAdmin.replaceChildren();
     if (error) {
@@ -1193,7 +1210,10 @@ footer small {
       const estadoItem = document.createElement('p');
       estadoItem.textContent = (item.publicado ? 'Publicado' : 'Borrador') + ' · ' + (item.categoria || 'Comunicado institucional');
       const resumen = document.createElement('p');
-      resumen.textContent = item.contenido;
+      resumen.textContent = item.contenido || '';
+      tarjeta.append(titulo, estadoItem);
+      if (resumen.textContent) tarjeta.appendChild(resumen);
+      if (item.archivo_nombre) { const adjunto = document.createElement('p'); adjunto.textContent = 'Adjunto: ' + item.archivo_nombre; tarjeta.appendChild(adjunto); }
       const editar = document.createElement('button');
       editar.type = 'button'; editar.className = 'btn'; editar.textContent = 'Editar';
       editar.addEventListener('click', () => {
@@ -1201,6 +1221,7 @@ footer small {
         document.getElementById('comunicado-titulo').value = item.titulo || '';
         document.getElementById('comunicado-categoria').value = item.categoria || 'Comunicado institucional';
         document.getElementById('comunicado-contenido').value = item.contenido || '';
+        document.getElementById('comunicado-adjunto').value = '';
         document.getElementById('comunicado-publicado').checked = !!item.publicado;
         botonGuardarComunicado.textContent = 'Guardar cambios';
         botonCancelarEdicionComunicado.hidden = false;
@@ -1222,7 +1243,7 @@ footer small {
         await cargarComunicadosAdmin();
         await cargarComunicadosPublicos();
       });
-      tarjeta.append(titulo, estadoItem, resumen, editar, eliminar);
+      tarjeta.append(editar, eliminar);
       listaComunicadosAdmin.appendChild(tarjeta);
     });
     estadoComunicados.textContent = '';
@@ -1235,19 +1256,36 @@ footer small {
       return;
     }
     const id = document.getElementById('comunicado-id').value;
+    const adjunto = document.getElementById('comunicado-adjunto').files[0];
     const datos = {
       titulo: document.getElementById('comunicado-titulo').value.trim(),
       categoria: document.getElementById('comunicado-categoria').value,
-      contenido: document.getElementById('comunicado-contenido').value.trim(),
+      contenido: document.getElementById('comunicado-contenido').value.trim() || null,
       publicado: document.getElementById('comunicado-publicado').checked
     };
-    if (!datos.titulo || !datos.contenido) {
-      estadoComunicados.textContent = 'Completa el título y el contenido.';
+    if (!datos.titulo || (!datos.contenido && !adjunto && !document.getElementById('comunicado-id').value)) {
+      estadoComunicados.textContent = 'Escribe un título y agrega una descripción o un archivo.';
       return;
+    }
+    if (adjunto) {
+      const tiposPermitidos = ['image/jpeg','image/png','image/webp','application/pdf','application/msword','application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+      if (!tiposPermitidos.includes(adjunto.type)) { estadoComunicados.textContent = 'Tipo de archivo no permitido. Usa JPG, PNG, WEBP, PDF o Word.'; return; }
+      if (adjunto.size > 10 * 1024 * 1024) { estadoComunicados.textContent = 'El archivo supera el límite de 10 MB.'; return; }
     }
     botonGuardarComunicado.disabled = true;
     estadoComunicados.textContent = id ? 'Guardando cambios...' : 'Guardando comunicado...';
     try {
+      if (adjunto) {
+        const ext = (adjunto.name.split('.').pop() || 'bin').replace(/[^a-zA-Z0-9]/g,'').toLowerCase();
+        const ruta = `comunicados/${Date.now()}-${Math.random().toString(36).slice(2,10)}.${ext}`;
+        const { error: errorSubida } = await supabaseClient.storage.from('galeria-ie7224').upload(ruta, adjunto, { upsert: false, contentType: adjunto.type });
+        if (errorSubida) throw errorSubida;
+        const { data: urlPublica } = supabaseClient.storage.from('galeria-ie7224').getPublicUrl(ruta);
+        datos.archivo_url = urlPublica.publicUrl;
+        datos.archivo_nombre = adjunto.name;
+        datos.archivo_tipo = adjunto.type;
+        datos.archivo_path = ruta;
+      }
       const resultado = id
         ? await supabaseClient.from('comunicados').update(datos).eq('id', id)
         : await supabaseClient.from('comunicados').insert([datos]);
@@ -1887,3 +1925,4 @@ recuperarBtn.addEventListener('click', async () => {
 
 </body>
 </html>
+
